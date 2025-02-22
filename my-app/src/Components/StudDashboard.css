@@ -1,0 +1,76 @@
+.dashboard-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    max-width: 800px;
+    margin: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+ 
+  .dashboard-header {
+    text-align: center;
+  }
+ 
+  .dashboard-header h2 {
+    color: #333;
+  }
+ 
+  .progress-section {
+    margin-top: 20px;
+  }
+ 
+  .progress-section h3 {
+    color: #333;
+  }
+ 
+  .progress-bar {
+    width: 100%;
+    height: 20px;
+    background-color: #ddd;
+    border-radius: 8px;
+  }
+ 
+  .progress {
+    height: 100%;
+    background-color: #4CAF50;
+    border-radius: 8px;
+  }
+ 
+  .lessons-completed {
+    margin-top: 20px;
+  }
+ 
+  .lessons-completed h3 {
+    color: #333;
+  }
+ 
+  .lessons-completed ul {
+    list-style-type: none;
+    padding-left: 0;
+  }
+ 
+  .lesson-item {
+    background-color: #f0f0f0;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+  }
+ 
+  .lesson-item:hover {
+    background-color: #ddd;
+  }
+ 
+  .lesson-item.completed {
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: line-through;
+  }
+ 
+  .lesson-item:active {
+    background-color: #ccc;
+  }
+ 

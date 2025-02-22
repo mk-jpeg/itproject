@@ -1,0 +1,199 @@
+.bg-gradient {
+  background-color: #304D6D;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+
+.card {
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+
+.card:hover {
+  transform: translateY(-5px); /* Hover effect to lift the card */
+}
+
+
+h1.h3 {
+  font-size: 2rem;
+  color: #92374D;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+
+.lead {
+  font-size: 1.25rem;
+  color: #555555;
+  margin-bottom: 20px;
+}
+
+
+.text-primary {
+  color: #555555; /* Primary color for the word display */
+  font-size: 3rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+
+/* Button Styling */
+.btn {
+  border-radius: 10px;
+  padding: 15px 20px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+
+.btn-light {
+  background-color: #f8f9fa;
+  color: #FED766;
+  border: 2px solid #dcdcdc;
+}
+
+
+.btn-light:hover {
+  background-color: #e2e6ea;
+}
+
+
+.btn-success {
+  background-color: #28a745;
+  color: white;
+  border: none;
+}
+
+
+.btn-success:hover {
+  background-color: #218838;
+}
+
+
+.btn-danger {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+}
+
+
+.btn-danger:hover {
+  background-color: #c82333;
+}
+
+
+.btn-primary {
+  background-color: #FED766;
+  color: white;
+  border: none;
+  padding: 15px 40px;
+}
+
+
+.btn-primary:hover {
+  background-color: #1d62d5;
+}
+
+
+/* Grid Layout for Options */
+.row {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+
+.col {
+  flex: 1;
+  min-width: 200px;
+}
+
+
+.w-100 {
+  width: 100%;
+}
+
+
+/* Icon Styling */
+.d-flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.text-success {
+  color: #28a745;
+}
+
+
+.text-danger {
+  color: #dc3545;
+}
+
+
+.fa-check-circle,
+.fa-times-circle {
+  font-size: 1.5rem;
+}
+
+
+/* Feedback Message Styling */
+.d-flex .me-2 {
+  margin-right: 10px;
+}
+
+
+.text-center {
+  text-align: center;
+}
+
+
+/* Next Word Button Styling */
+.btn-primary.btn-lg {
+  padding: 12px 30px;
+  font-size: 1.2rem;
+}
+
+
+.btn-primary.btn-lg:hover {
+  background-color: #1d62d5;
+}
+
+
+/* Responsiveness */
+@media (max-width: 768px) {
+  .card {
+    padding: 20px;
+  }
+
+
+  .text-primary {
+    font-size: 2.5rem; /* Slightly smaller font for smaller screens */
+  }
+
+
+  .btn {
+    padding: 12px 18px;
+    font-size: 1rem;
+  }
+
+
+  .btn-primary.btn-lg {
+    padding: 12px 25px;
+  }
+}
