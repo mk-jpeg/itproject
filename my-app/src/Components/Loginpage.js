@@ -1,4 +1,4 @@
-ort React, { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Correctly import useNavigate
 import './Loginpage.css';
 
@@ -49,10 +49,6 @@ const LoginPage = () => {
           {error && <p className="error-message">{error}</p>}
           <button type="submit" className="login-btn">Login</button>
         </form>
-        <div className="links">
-          <a href="#">Forgot Password?</a>
-          <a href="#">Create an Account</a>
-        </div>
       </div>
     </div>
   );
