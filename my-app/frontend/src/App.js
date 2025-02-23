@@ -1,10 +1,9 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import LoginPage from './Components/Loginpage';
-import StudDashboard from './Components/StudDashboard';
-import AntonymGame from './Components/Antonym';
-import GrammarSort from './Components/GrammarSort';
-
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import LoginPage from "./Components/Loginpage";
+import StudDashboard from "./Components/StudDashboard";
+import AntonymGame from "./Components/Antonyms/Antonym";
+import GrammarSort from "./Components/GrammarSort";
 
 const App = () => {
   return (
@@ -19,8 +18,4 @@ const App = () => {
   );
 };
 
-
 export default App;
-
-
-
