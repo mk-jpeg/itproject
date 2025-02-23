@@ -6,6 +6,7 @@ const swaggerUi = require("swagger-ui-express");
 const swaggerDocs = require("./swagger");
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
+const wordRoutes = require("./routes/wordRoutes");
 
 // Load environment variables
 dotenv.config();
@@ -21,6 +22,7 @@ app.use(cors());
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api", wordRoutes);
 
 // MongoDB Connection
 mongoose
