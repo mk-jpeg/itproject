@@ -5,6 +5,26 @@ const User = require("../models/User");
 exports.register = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
+
+    // Validate role
+    if (!["teacher", "student"].includes(role)) {
+      return res.status(400).json({
+        message: "Invalid role. Role must be either 'teacher' or 'student'.",
+      });
+    }
+
+    // Validate email formate
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ message: "Invalid email format." });
+    }
+
+    // Validate email does not exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "Email already exists." });
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({ name, email, password: hashedPassword, role });
     await newUser.save();
