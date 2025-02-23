@@ -1,0 +1,26 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Launch Server",
+        "type": "node",
+        "request": "launch",
+        "program": "${workspaceFolder}/server.js",
+        "env": {
+          "NODE_ENV": "development",
+          "PORT": "5000",
+          "MONGO_URI": "mongodb://127.0.0.1:27017/project",
+          "JWT_SECRET": "rUT3y0Aiwj0S2VTxMwkWgfYtYBFE6W0N"
+        },
+        "restart": true,
+        "console": "integratedTerminal"
+      },
+      {
+        "name": "Attach to Process",
+        "type": "node",
+        "request": "attach",
+        "processId": "${command:PickProcess}"
+      }
+    ]
+  }
+  
