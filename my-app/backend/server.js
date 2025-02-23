@@ -24,6 +24,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api", wordRoutes);
 
+// TODO: Create API for GrammarSort
+
 // MongoDB Connection
 mongoose
   .connect(process.env.MONGO_URI)
