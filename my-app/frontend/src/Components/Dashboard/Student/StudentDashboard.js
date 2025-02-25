@@ -12,7 +12,7 @@ import {
   Tooltip,
   Legend
 } from "chart.js";
-import "./StudDashboard.css";
+import "./StudentDashboard.css";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
