@@ -1,3 +1,4 @@
+/* Background & General Styling */
 body {
   background: linear-gradient(to right, #6a11cb, #2575fc);
   color: white;
@@ -10,125 +11,140 @@ body {
   margin: 0;
 }
 
+/* Heading outside game container */
+.game-heading {
+  font-family: 'Poppins', sans-serif;
+  font-size: 36px;
+  font-weight: bold;
+  color: #555555;
+  text-align: center;
+  margin-bottom: 20px;
+}
 
-/* Game Container (Rectangular Shape) */
+
+/* Game Container */
 .game1 {
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.85);
   padding: 40px;
   border-radius: 15px;
   box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.3);
-  width: 80%;
-  max-width: 700px;
-  min-height: 400px; /* Ensures a rectangular shape */
+  width: 90%;
+  max-width: 600px;
+  min-height: 450px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
+/* Score Display */
+.score {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #ffcc00;
+}
 
 /* Word Card */
 .word-card {
   background: #f4efca;
   color: black;
-  padding: 20px;
-  border-radius: 15px;
-  margin-bottom: 30px;
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: 20px;
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
   text-align: center;
-  width: 90%;
+  font-size: 24px;
+  font-weight: bold;
+  width: 100%;
+  max-width: 450px;
 }
 
-
-/* Options */
+/* Options Container */
 .options {
   display: flex;
   flex-wrap: wrap;
-  gap: 15px;
-  margin-top: 15px;
+  gap: 12px;
+  margin-top: 10px;
   width: 100%;
   justify-content: center;
 }
 
-
+/* Option Buttons */
 .option-btn {
   background: #F66435;
   border: none;
-  color: #f4efca;
+  color: white;
   font-size: 18px;
+  font-weight: bold;
   padding: 15px;
-  border-radius: 10px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
   width: 45%;
-  max-width: 250px;
+  max-width: 200px;
   text-align: center;
 }
-
 
 .option-btn:hover {
   background: #ff4b4b;
   transform: scale(1.05);
 }
 
-
-/* Correct Answer Button Animation */
+/* Correct Answer Animation */
 .correct {
   background: #0cfd70 !important;
   color: white !important;
-  border-radius: 10px;
-  padding: 15px;
   animation: popEffect 0.3s ease-in-out;
 }
-
-
-/* Subtle Pop Effect */
-@keyframes popEffect {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.08);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
 
 /* Incorrect Answer */
 .incorrect {
   background: #e74c3c !important;
 }
 
+/* Pop Effect */
+@keyframes popEffect {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+/* Shake Effect for Wrong Answer */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-10px); }
+  40%, 80% { transform: translateX(10px); }
+}
+
+.shake {
+  animation: shake 0.5s ease-in-out;
+}
 
 /* Feedback Message */
 .feedback {
-  font-size: 28px;
-  margin-top: 20px;
+  font-size: 22px;
+  margin-top: 15px;
   font-weight: bold;
   padding: 10px 20px;
-  border-radius: 10px;
+  border-radius: 8px;
   display: inline-block;
 }
-
 
 /* Game Over Screen */
 .game-over {
   background: rgba(0, 0, 0, 0.9);
   padding: 30px;
-  border-radius: 15px;
+  border-radius: 12px;
   text-align: center;
   max-width: 500px;
   margin: auto;
 }
 
-
 .game-over h1 {
   font-size: 32px;
   color: #ffcc00;
 }
-
 
 .game-over h2 {
   font-size: 26px;
@@ -136,8 +152,7 @@ body {
   margin-top: 10px;
 }
 
-
-/* Confetti */
+/* Confetti Effect */
 canvas {
   position: fixed;
   top: 0;
@@ -146,19 +161,3 @@ canvas {
   height: 100%;
   pointer-events: none;
 }
-
-
-@keyframes shake {
-  0% { transform: translateX(0); }
-  20% { transform: translateX(-10px); }
-  40% { transform: translateX(10px); }
-  60% { transform: translateX(-10px); }
-  80% { transform: translateX(10px); }
-  100% { transform: translateX(0); }
-}
-
-
-.shake {
-  animation: shake 0.9s ease-in-out;
-}
- 

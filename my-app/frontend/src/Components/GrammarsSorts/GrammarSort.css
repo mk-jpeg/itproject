@@ -1,0 +1,112 @@
+.game-container {
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(to right, #6a11cb, #2575fc);
+  color: white;
+  padding: 20px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.word-bank {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.word {
+  background: #f4efca;
+  color: black;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: grab;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.word:hover {
+  background: #ffcc00;
+}
+
+.boxes-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.box {
+  background: rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  border-radius: 10px;
+  width: 200px;
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 2px dashed white;
+  transition: 0.3s;
+}
+
+.box-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-transform: capitalize;
+}
+
+.placed-word {
+  background: #ffcc00;
+  padding: 8px;
+  margin: 5px;
+  border-radius: 6px;
+  color: black;
+  font-weight: bold;
+}
+
+.drag-over {
+  border-color: #ff4b4b;
+  transform: scale(1.05);
+}
+
+.buttons {
+  margin-top: 20px;
+}
+
+.check-button, .reset-button {
+  background: #ff4b4b;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 5px;
+  transition: 0.3s;
+}
+
+.check-button:hover, .reset-button:hover {
+  background: #d84315;
+}
+
+.feedback {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 15px;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.correct {
+  background: #0cfd70;
+}
+
+.incorrect {
+  background: #e74c3c;
+}

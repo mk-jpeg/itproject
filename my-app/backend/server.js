@@ -7,6 +7,8 @@ const swaggerDocs = require("./swagger");
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const wordRoutes = require("./routes/wordRoutes");
+const grammarWordRoutes = require("./routes/grammarWordRoutes");
+
 
 // Load environment variables
 dotenv.config();
@@ -23,6 +25,8 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api", wordRoutes);
+app.use("/api/grammarWord", grammarWordRoutes);
+
 
 // TODO: Create API for GrammarSort
 

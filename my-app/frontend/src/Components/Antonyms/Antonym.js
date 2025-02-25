@@ -1,106 +1,112 @@
-import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import React, { useEffect, useState } from "react";
 import Confetti from "react-confetti";
-import { useWindowSize } from "react-use"; // For dynamic screen size
+import { useWindowSize } from "react-use";
 import "./Antonym.css";
-import axios from "axios";
 
-const AntonymGame = () => {
-  const { width, height } = useWindowSize(); // Get screen size
-  const [currentWordIndex, setCurrentWordIndex] = useState(0);
-  const [options, setOptions] = useState([]);
-  const [selectedAnswer, setSelectedAnswer] = useState(null);
-  const [isCorrect, setIsCorrect] = useState(null);
+const Antonym = () => {
+  const { width, height } = useWindowSize();
+  const [wordData, setWordData] = useState([]); // Stores all words from API
+  const [usedWords, setUsedWords] = useState([]); // Tracks words already used
+  const [currentIndex, setCurrentIndex] = useState(0); // Track word position
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
+  const [feedback, setFeedback] = useState("");
+  const [shake, setShake] = useState(false);
+  const [options, setOptions] = useState([]);
 
-  const [words, setWords] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
+  // Fetch words from API once
   useEffect(() => {
-    fetchWords();
+    fetch("http://localhost:5000/api/words")
+      .then((response) => response.json())
+      .then((data) => {
+        setWordData(data);
+        setUsedWords(data); // Store all words for tracking
+        loadNewWord(0, data);
+      })
+      .catch((error) => console.error("Error fetching words:", error));
   }, []);
 
-  // useEffect(() => {
-  //   if (currentWordIndex < words.length) {
-  //     const wordObj = words[currentWordIndex];
-  //     setOptions(shuffleArray([wordObj.antonym, ...wordObj.distractors]));
-  //   } else {
-  //     setGameOver(true);
-  //   }
-  // }, [currentWordIndex]);
-
-  const fetchWords = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.get("http://localhost:5000/api/words");
-      setWords(response.data);
-    } catch (err) {
-      setError("Failed to load words.");
+  // Load a new word based on index
+  const loadNewWord = (index, data) => {
+    if (index >= data.length) {
+      setGameOver(true);
+      return;
     }
-    setLoading(false);
+
+    const selectedWord = data[index];
+
+    // Create options
+    const correctAntonym = selectedWord.antonym;
+    let distractors = data
+      .filter((item) => item.word !== selectedWord.word)
+      .map((item) => item.antonym);
+
+    // Shuffle and select options
+    const allOptions = [correctAntonym, ...shuffleArray(distractors).slice(0, 3)];
+    setOptions(shuffleArray(allOptions));
   };
 
-  const shuffleArray = (array) => [...array].sort(() => Math.random() - 0.5);
+  // Handle answer selection
+  const handleOptionClick = (selectedOption) => {
+    if (!wordData[currentIndex]) return;
 
-  const handleOptionClick = (option) => {
-    if (selectedAnswer !== null) return;
-
-    const correct = option === words[currentWordIndex].antonym;
-    setSelectedAnswer(option);
-    setIsCorrect(correct);
-
-    if (correct) {
-      setScore((prev) => prev + 1);
-      setTimeout(() => setCurrentWordIndex((prev) => prev + 1), 1000);
+    if (selectedOption === wordData[currentIndex].antonym) {
+      setScore(score + 1);
+      setFeedback("✅ Correct!");
     } else {
-      setTimeout(() => setCurrentWordIndex((prev) => prev + 1), 500);
+      setFeedback("❌ Incorrect!");
+      setShake(true);
+      setTimeout(() => setShake(false), 500); // Stop shaking after 0.5s
     }
+
+    // Move to the next word automatically
+    setTimeout(() => {
+      setFeedback("");
+      const nextIndex = currentIndex + 1;
+      setCurrentIndex(nextIndex);
+      loadNewWord(nextIndex, wordData);
+    }, 1000);
   };
 
-  return gameOver ? (
-    <div className="game-over">
-      {/* 🎉 Confetti when the game ends */}
-      <Confetti width={width} height={height} />
-      <h1>GOOD JOB!</h1>
-      <h2>Your Final Score: {score}</h2>
-    </div>
-  ) : (
-    <motion.div
-      className="game1"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      {loading && <p>Loading words...</p>}
-      {error && <p className="text-red-500">{error}</p>}
+  // Shuffle array utility
+  const shuffleArray = (array) => array.sort(() => Math.random() - 0.5);
+
+  return (
+    <div className="container">
+      <h1 className="game-heading">Find the Antonym</h1> 
       
-      <h1>Antonym Game</h1>
-      <h2>Score: {score}</h2>
-      {words.length > 0 ? (
-        <div>
-          {words.map((word) => (
-            <div
-              key={word.id}
-              style={{
-                border: "1px solid #ddd",
-                borderRadius: "8px",
-                padding: "15px",
-                marginBottom: "10px",
-              }}
-            >
-              <h2>{word.word}</h2>
-              <p><strong>Antonym:</strong> {word.antonym}</p>
-              <p><strong>Distractors:</strong> {word.distractors.join(", ")}</p>
-            </div>
-          ))}
-        </div>
+    <div className={`game1 ${shake ? "shake" : ""}`}>
+      {!gameOver ? (
+        <>
+          <h2 className="score">Score: {score}</h2>
+          {wordData[currentIndex] && (
+            <>
+              <div className="word-card">{wordData[currentIndex].word}</div>
+              <div className="options">
+                {options.map((option, index) => (
+                  <button
+                    key={index}
+                    className="option-btn"
+                    onClick={() => handleOptionClick(option)}
+                  >
+                    {option}
+                  </button>
+                ))}
+              </div>
+              {feedback && <p className="feedback">{feedback}</p>}
+            </>
+          )}
+        </>
       ) : (
-        !loading && <p>No words found.</p>
+        <div className="game-over">
+          <Confetti width={width} height={height} />
+          <h1>🎉 Good Job! 🎉</h1>
+          <h2>Final Score: {score}</h2>
+        </div>
       )}
-    </motion.div>
+      </div>
+    </div>
   );
 };
 
-export default AntonymGame;
+export default Antonym;

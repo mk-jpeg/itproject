@@ -1,18 +1,23 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import LoginPage from "./Components/Loginpage";
+import LoginPage from "./Components/Loginpages/Loginpage";
 import StudDashboard from "./Components/StudDashboard";
-import AntonymGame from "./Components/Antonyms/Antonym";
-import GrammarSort from "./Components/GrammarSort";
+import Antonym from "./Components/Antonyms/Antonym";
+import GrammarSort from "./Components/GrammarsSorts/GrammarSort";
+import TeacherDashboard from "./Components/TeacherDashboard";
+import HomePage from "./Components/HomePage/HomePage";
 
 const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<LoginPage />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/LoginPage" element={<LoginPage />} />
         <Route path="/StudDashboard" element={<StudDashboard />} />
-        <Route path="/antonym-game" element={<AntonymGame />} />
-        <Route path="/grammar-game" element={<GrammarSort />} />
+        <Route path="/Antonyms" element={<Antonym/>} />
+        <Route path="/GrammarsSort" element={<GrammarSort />} />
+        <Route path="/TeacherDashboard" element={<TeacherDashboard />} />
+
       </Routes>
     </Router>
   );

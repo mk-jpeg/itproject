@@ -1,27 +1,36 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Correctly import useNavigate
+import { useNavigate } from 'react-router-dom';
 import './Loginpage.css';
-
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
-
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
+    try {
+      const response = await fetch("http://localhost:5000/api/auth/login", { // Adjust port if needed
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
 
-    if (email === 'user@example.com' && password === 'password123') {
-      alert('Login successful! Redirecting...');
-      navigate('/dashboard'); // Redirect to dashboard
-    } else {
-      setError('Invalid email or password.');
+      const data = await response.json();
+
+      if (response.ok) {
+        alert("Login successful! Redirecting...");
+        localStorage.setItem("token", data.token); // Store token for authentication
+        navigate("/dashboard"); // Redirect to dashboard
+      } else {
+        setError(data.message || "Invalid email or password.");
+      }
+    } catch (error) {
+      setError("Server error. Please try again later.");
     }
   };
-
 
   return (
     <div className="login-container">
@@ -53,6 +62,5 @@ const LoginPage = () => {
     </div>
   );
 };
-
 
 export default LoginPage;
