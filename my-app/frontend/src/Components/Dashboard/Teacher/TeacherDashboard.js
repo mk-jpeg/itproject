@@ -1,18 +1,32 @@
 import React, { useState, useEffect } from "react";
-import { FaGamepad, FaChalkboardTeacher, FaBook, FaChartBar } from "react-icons/fa";
+import {
+  FaGamepad,
+  FaChalkboardTeacher,
+  FaBook,
+  FaChartBar,
+} from "react-icons/fa";
 import { BsSunFill, BsMoonFill } from "react-icons/bs";
-import axios from "axios";
 import "./TeacherDashboard.css";
-
+import { TeacherService } from "../../../Services/TeacherService";
 
 const TeacherDashboard = () => {
   const [darkMode, setDarkMode] = useState(false);
-  const [studentData, setStudentData] = useState({ antonymGame: [], grammarGame: [] });
+  const [studentData, setStudentData] = useState({
+    antonymGame: [],
+    grammarGame: [],
+  });
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/students").then((response) => {
-      setStudentData(response.data);
-    });
+    const fetchStudentData = async () => {
+      try {
+        const data = await TeacherService.getStudentData();
+        setStudentData(data);
+      } catch (error) {
+        console.error("Failed to fetch student data", error);
+      }
+    };
+
+    fetchStudentData();
   }, []);
 
   const GameProgressCard = ({ title, data, icon }) => (
@@ -48,24 +62,42 @@ const TeacherDashboard = () => {
   );
 
   return (
-    <div className={`min-h-screen p-6 ${darkMode ? "dark bg-gray-900" : "bg-background"}`}>
+    <div
+      className={`min-h-screen p-6 ${
+        darkMode ? "dark bg-gray-900" : "bg-background"
+      }`}
+    >
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <div className="flex items-center gap-3">
             <FaChalkboardTeacher className="text-4xl text-primary" />
-            <h1 className="text-2xl font-heading text-foreground">Teacher Dashboard</h1>
+            <h1 className="text-2xl font-heading text-foreground">
+              Teacher Dashboard
+            </h1>
           </div>
           <button
             onClick={() => setDarkMode(!darkMode)}
             className="p-2 rounded-full bg-secondary hover:bg-muted transition-colors"
           >
-            {darkMode ? <BsSunFill className="text-xl" /> : <BsMoonFill className="text-xl" />}
+            {darkMode ? (
+              <BsSunFill className="text-xl" />
+            ) : (
+              <BsMoonFill className="text-xl" />
+            )}
           </button>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <GameProgressCard title="Antonym Exploration" data={studentData.antonymGame} icon={<FaGamepad />} />
-          <GameProgressCard title="Grammar Sorting" data={studentData.grammarGame} icon={<FaBook />} />
+          <GameProgressCard
+            title="Antonym Exploration"
+            data={studentData.antonymGame}
+            icon={<FaGamepad />}
+          />
+          <GameProgressCard
+            title="Grammar Sorting"
+            data={studentData.grammarGame}
+            icon={<FaBook />}
+          />
         </div>
       </div>
     </div>
