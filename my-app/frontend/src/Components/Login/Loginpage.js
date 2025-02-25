@@ -9,7 +9,8 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
-import { jwtDecode } from 'jwt-decode';
+import { AuthService } from '../../Services/AuthService';
+import { jwtDecode } from "jwt-decode";
 
 const Alert = React.forwardRef((props, ref) => {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -27,42 +28,30 @@ const LoginPage = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:5000/api/auth/login", {
-        // Adjust port if needed
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+      const data = await AuthService.login(email, password);
 
-      const data = await response.json();
+      setOpenSnackbar(true);
+      localStorage.setItem("token", data.token); // Store token for authentication
 
-      if (response.ok) {
-        setOpenSnackbar(true);
-        localStorage.setItem("token", data.token); // Store token for authentication
+      const decodedToken = jwtDecode(data.token);
+      const userRole = decodedToken.role;
 
-        const decodedToken = jwtDecode(data.token);
-        const userRole = decodedToken.role;
-
-        setTimeout(() => {
-          if (userRole === "teacher") {
-            navigate("/teacher-dashboard", {
-              state: { message: "Welcome Teacher!" },
-            });
-          } else if (userRole === "student") {
-            navigate("/student-dashboard", {
-              state: { message: "Welcome Student!" },
-            });
-          } else {
-            setError("Invalid role. Please contact admin.");
-            setOpenDialog(true);
-          }
-        }, 1500);
-      } else {
-        setError(data.message || "Invalid email or password.");
-        setOpenDialog(true);
-      }
+      setTimeout(() => {
+        if (userRole === "teacher") {
+          navigate("/teacher-dashboard", {
+            state: { message: "Welcome Teacher!" },
+          });
+        } else if (userRole === "student") {
+          navigate("/student-dashboard", {
+            state: { message: "Welcome Student!" },
+          });
+        } else {
+          setError("Invalid role. Please contact admin.");
+          setOpenDialog(true);
+        }
+      }, 1500);
     } catch (error) {
-      setError("Server error. Please try again later.");
+      setError("Invalid email or password.");
       setOpenDialog(true);
     }
   };
