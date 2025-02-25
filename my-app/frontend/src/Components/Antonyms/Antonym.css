@@ -16,7 +16,7 @@ body {
   font-family: 'Poppins', sans-serif;
   font-size: 36px;
   font-weight: bold;
-  color: #555555;
+  color: #f4efca;
   text-align: center;
   margin-bottom: 20px;
 }
@@ -94,7 +94,7 @@ body {
 /* Correct Answer Animation */
 .correct {
   background: #0cfd70 !important;
-  color: white !important;
+  color: #0cfd70 !important;
   animation: popEffect 0.3s ease-in-out;
 }
 
@@ -161,3 +161,27 @@ canvas {
   height: 100%;
   pointer-events: none;
 }
+
+.countdown {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 80px;
+  font-weight: bold;
+  color: #FFD700; /* Gold */
+  text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+

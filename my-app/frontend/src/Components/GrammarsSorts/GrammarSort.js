@@ -1,149 +1,122 @@
-import React, { useState, useEffect } from 'react';
-import './GrammarSort.css';
+import React, { useState, useEffect } from "react";
+import "./GrammarSort.css";
 
 function GrammarSort() {
-  const [wordBank, setWordBank] = useState([]);
-  const [boxes, setBoxes] = useState({ noun: [], verb: [], both: [] });
-  const [feedback, setFeedback] = useState('');
+  const initialWords = {
+    noun: ["dog", "apple", "house", "car", "tree", "book", "river", "mountain", "pencil", "ocean"],
+    verb: ["run", "jump", "write", "sing", "dance", "climb", "drive", "swim", "read", "paint"],
+    both: ["play", "watch", "help", "move", "work", "cook", "draw", "paint", "cycle", "shop"],
+  };
+
+  const [score, setScore] = useState(0);
   const [draggedWord, setDraggedWord] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [feedback, setFeedback] = useState("");
+  const [boxes, setBoxes] = useState({ noun: [], verb: [], both: [] });
+  const [remainingWords, setRemainingWords] = useState({ ...initialWords });
+  const [currentWords, setCurrentWords] = useState([]);
+  const [showNext, setShowNext] = useState(false);
 
-  // Fetch words from API
   useEffect(() => {
-    const fetchWords = async () => {
-      try {
-        const response = await fetch('http://localhost:5000/api/grammarWords');
-        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-
-        const data = await response.json();
-        console.log('Fetched Words:', data.words);
-
-        if (data.words) {
-          setWordBank([...data.words.noun, ...data.words.verb, ...data.words.both]);
-          setBoxes({ noun: [], verb: [], both: [] });
-        } else {
-          throw new Error('Invalid API response format');
-        }
-      } catch (error) {
-        console.error('Error fetching words:', error);
-        setError('Failed to fetch words. Please try again later.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchWords();
+    getNewWords();
   }, []);
+
+  const getNewWords = () => {
+    const { noun, verb, both } = remainingWords;
+
+    if (noun.length === 0 || verb.length === 0 || both.length === 0) {
+      setFeedback(`🎉 Game Over! Final Score: ${score}`);
+      return;
+    }
+
+    const newNoun = noun[Math.floor(Math.random() * noun.length)];
+    const newVerb = verb[Math.floor(Math.random() * verb.length)];
+    const newBoth = both[Math.floor(Math.random() * both.length)];
+
+    setCurrentWords([
+      { word: newNoun, category: "noun" },
+      { word: newVerb, category: "verb" },
+      { word: newBoth, category: "both" },
+    ]);
+
+    setRemainingWords({
+      noun: noun.filter((word) => word !== newNoun),
+      verb: verb.filter((word) => word !== newVerb),
+      both: both.filter((word) => word !== newBoth),
+    });
+
+    setBoxes({ noun: [], verb: [], both: [] });
+    setFeedback("");
+    setShowNext(false);
+  };
 
   const handleDragStart = (word) => {
     setDraggedWord(word);
   };
 
-  const handleDragOver = (e) => {
-    e.preventDefault();
-    e.currentTarget.classList.add('drag-over');
-  };
+  const handleDrop = (category) => {
+    if (!draggedWord) return;
 
-  const handleDragLeave = (e) => {
-    e.currentTarget.classList.remove('drag-over');
-  };
+    setBoxes((prev) => ({
+      ...prev,
+      [category]: [...prev[category], draggedWord.word],
+    }));
 
-  const handleDrop = (e, category) => {
-    e.preventDefault();
-    e.currentTarget.classList.remove('drag-over');
-
-    if (draggedWord) {
-      setBoxes((prev) => ({
-        ...prev,
-        [category]: [...prev[category], draggedWord],
-      }));
-      setWordBank((prev) => prev.filter((word) => word !== draggedWord));
-      setDraggedWord(null);
-    }
+    setDraggedWord(null);
   };
 
   const checkAnswers = () => {
-    let correctCount = 0;
-    let incorrectCount = 0;
+    let correct = 0;
 
-    Object.keys(boxes).forEach((category) => {
-      boxes[category].forEach((word) => {
-        if (wordBank.includes(word)) {
-          correctCount++;
-        } else {
-          incorrectCount++;
-        }
-      });
+    currentWords.forEach((word) => {
+      if (boxes[word.category].includes(word.word)) {
+        correct++;
+      }
     });
 
-    if (incorrectCount === 0 && correctCount > 0) {
-      setFeedback('Great job! All words are correctly sorted! 🎉');
+    if (correct === 3) {
+      setScore((prev) => prev + 1);
+      setFeedback("✅ Correct! +1 point");
+      setShowNext(true);
     } else {
-      setFeedback(`You got ${correctCount} correct and ${incorrectCount} incorrect.`);
+      setFeedback("❌ Incorrect! Try again.");
     }
   };
 
-  const resetGame = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch('http://localhost:5000/api/grammarWords');
-      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-
-      const data = await response.json();
-      console.log('Fetched Words after reset:', data.words);
-
-      if (data.words) {
-        setWordBank([...data.words.noun, ...data.words.verb, ...data.words.both]);
-        setBoxes({ noun: [], verb: [], both: [] });
-      } else {
-        throw new Error('Invalid API response format');
-      }
-    } catch (error) {
-      console.error('Error fetching words:', error);
-      setError('Failed to fetch words. Please try again later.');
-    } finally {
-      setLoading(false);
-    }
+  const resetGame = () => {
+    setScore(0);
+    setRemainingWords({ ...initialWords });
+    setFeedback("");
+    setShowNext(false);
+    getNewWords();
   };
 
   return (
     <div className="game-container">
       <h1>Grammar Sort Game</h1>
-      <p>Drag and drop words into the correct grammatical category.</p>
-
-      {loading && <p>Loading words...</p>}
-      {error && <p className="error">{error}</p>}
+      <h2 className="score">Score: {score}</h2>
 
       <div className="word-bank">
-        {wordBank.length > 0 ? (
-          wordBank.map((word, index) => (
-            <div
-              key={index}
-              className="word"
-              draggable
-              onDragStart={() => handleDragStart(word)}
-            >
-              {word}
-            </div>
-          ))
-        ) : (
-          !loading && <p>No words available.</p>
-        )}
+        {currentWords.map((word, index) => (
+          <div
+            key={index}
+            className="word"
+            draggable
+            onDragStart={() => handleDragStart(word)}
+          >
+            {word.word}
+          </div>
+        ))}
       </div>
 
       <div className="boxes-container">
-        {['noun', 'verb', 'both'].map((category) => (
+        {["noun", "verb", "both"].map((category) => (
           <div
             key={category}
             className="box"
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={(e) => handleDrop(e, category)}
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={() => handleDrop(category)}
           >
-            <div className="box-title">
-              {category.charAt(0).toUpperCase() + category.slice(1)}
-            </div>
+            <div className="box-title">{category.toUpperCase()}</div>
             {boxes[category].map((word, index) => (
               <div key={index} className="placed-word">{word}</div>
             ))}
@@ -151,20 +124,23 @@ function GrammarSort() {
         ))}
       </div>
 
+      {feedback && <div className="feedback">{feedback}</div>}
+
       <div className="buttons">
-        <button className="check-button" onClick={checkAnswers}>
-          Check Answers
-        </button>
-        <button className="reset-button" onClick={resetGame}>
-          Reset
+        {!showNext ? (
+          <button className="option-btn" onClick={checkAnswers}>
+            Check Answers
+          </button>
+        ) : (
+          <button className="option-btn" onClick={getNewWords}>
+            Next
+          </button>
+        )}
+
+        <button className="option-btn" onClick={resetGame}>
+          Restart Game
         </button>
       </div>
-
-      {feedback && (
-        <div className={`feedback ${feedback.includes('Great job') ? 'correct' : 'incorrect'}`}>
-          {feedback}
-        </div>
-      )}
     </div>
   );
 }

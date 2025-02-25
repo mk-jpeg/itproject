@@ -64,7 +64,7 @@ const StudDashboard = () => {
 
   return (
     <div className="dashboard-container">
-      {/* Restored Navbar */}
+      
       <nav className="navbar bg-blue-500 p-4 shadow-lg">
         <div className="container mx-auto flex justify-between items-center">
           <div className="logo flex items-center">
@@ -79,8 +79,8 @@ const StudDashboard = () => {
       {/* Dashboard Content */}
       <div className="content-container">
         <div className="dashboard-header">
-          <h2>Welcome, {studentData.name}!</h2>
-          <p style={{ fontFamily: 'Nunito, sans-serif', fontSize: '1.5rem', color: '#ff6600' }}>Select to continue learning</p>
+          <h2>Welcome {studentData.name}!</h2>
+          <p style={{ fontFamily: 'Nunito, sans-serif', fontSize: '1.5rem', color: '#f4efca' }}>Time to unleash your inner word wizard.</p>
         </div>
 
         <div className="card-container">
