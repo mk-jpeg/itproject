@@ -1,3 +1,4 @@
+/* General Styling */
 body {
   background: linear-gradient(to right, #6a11cb, #2575fc);
   color: white;
@@ -10,128 +11,153 @@ body {
   margin: 0;
 }
 
+/* Game Container */
 .game-container {
-  text-align: center;
-  color: white;
-  padding: 20px;
-  min-height: 100vh;
-  background: none; /* Remove conflicting background */
+  background: rgba(0, 0, 0, 0.85);
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.3);
+  width: 90%;
+  max-width: 500px; /* Smaller width for better centering */
+  min-height: 400px; /* Adjusted height */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
+/* Heading */
 h1 {
-  font-size: 36px;
+  font-size: 26px;
+  font-weight: bold;
+  color: #ffcc00;
   margin-bottom: 10px;
 }
 
-.word-bank {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
+h2 {
+  font-size: 20px;
+  font-weight: bold;
+  color: #f4efca;
 }
 
+/* Round Counter */
+.round {
+  font-size: 18px;
+  color: #ff66b2;
+  margin-bottom: 10px;
+}
+
+/* Score Display */
+.score {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #ffcc00;
+}
+
+/* Word Bank */
+.word-bank {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+/* Word Cards */
 .word {
   background: #f4efca;
   color: black;
   padding: 10px 15px;
   border-radius: 8px;
-  cursor: grab;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  font-size: 18px;
   font-weight: bold;
-  transition: 0.2s;
+  cursor: grab;
+  transition: transform 0.2s ease-in-out;
 }
 
-.word:hover {
-  background: #ffcc00;
+.word:active {
+  cursor: grabbing;
+  transform: scale(1.1);
 }
 
+/* Drop Boxes */
 .boxes-container {
   display: flex;
   justify-content: center;
-  gap: 15px;
+  gap: 10px;
   flex-wrap: wrap;
+  margin-top: 10px;
 }
 
+/* Drop Box */
 .box {
-  background: rgba(0, 0, 0, 0.8);
-  padding: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px dashed #ffcc00;
   border-radius: 10px;
-  width: 200px;
-  min-height: 150px;
+  padding: 15px;
+  width: 120px;
+  min-height: 80px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 2px dashed white;
-  transition: 0.3s;
+  justify-content: flex-start;
 }
 
+/* Category Title */
 .box-title {
-  font-size: 18px;
+  font-size: 14px;
   font-weight: bold;
-  margin-bottom: 10px;
-  text-transform: capitalize;
+  margin-bottom: 5px;
+  color: #ffcc00;
 }
 
+/* Placed Words */
 .placed-word {
-  background: #ffcc00;
-  padding: 8px;
-  margin: 5px;
-  border-radius: 6px;
+  background: #f4efca;
   color: black;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 14px;
   font-weight: bold;
+  margin-top: 5px;
 }
 
-.drag-over {
-  border-color: #ff4b4b;
-  transform: scale(1.05);
-}
-
-.buttons {
-  margin-top: 20px;
-}
-
-/* Updated Check and Restart Button Styles */
-.check-button, .reset-button {
-  background: #1DB954; /* Bright green */
-  color: white;
+/* Feedback Message */
+.feedback {
   font-size: 18px;
+  margin-top: 10px;
   font-weight: bold;
-  padding: 12px 24px;
-  border: none;
+  padding: 8px 15px;
   border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease-in-out;
-  text-transform: uppercase;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: inline-block;
+  background-color: rgb(3, 203, 3);
+  color: black;
 }
 
-.check-button:hover, .reset-button:hover {
-  background: #17a747; /* Darker green */
-  transform: scale(1.05);
+/* Buttons */
+.buttons {
+  margin-top: 15px;
 }
 
-.reset-button {
-  background: #F66435; /* Orange */
-}
-
-.reset-button:hover {
-  background: #ff4b4b; /* Red hover effect */
-}
-
-/* Option Button Styles */
 .option-btn {
   background: #F66435;
   border: none;
   color: white;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: bold;
-  padding: 15px;
+  padding: 10px 15px;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
-  width: 45%;
-  max-width: 200px;
-  text-align: center;
+  margin: 5px;
+  width: 120px;
 }
 
 .option-btn:hover {
@@ -139,18 +165,52 @@ h1 {
   transform: scale(1.05);
 }
 
-.feedback {
-  font-size: 20px;
-  font-weight: bold;
-  margin-top: 15px;
-  padding: 10px;
-  border-radius: 8px;
+/* Game Over Screen */
+.game-over {
+  background: rgba(0, 0, 0, 0.9);
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  max-width: 400px;
+  margin: auto;
 }
 
-.correct {
-  background: #0cfd70;
+.game-over h2 {
+  font-size: 22px;
+  color: #ffcc00;
+  margin-bottom: 10px;
 }
 
-.incorrect {
-  background: #e74c3c;
+/* Confetti Effect */
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .game-container {
+    max-width: 90%;
+    padding: 20px;
+  }
+
+  .word {
+    font-size: 16px;
+    padding: 8px 12px;
+  }
+
+  .box {
+    width: 100px;
+    min-height: 70px;
+  }
+
+  .option-btn {
+    width: 100px;
+    font-size: 14px;
+    padding: 8px 12px;
+  }
 }

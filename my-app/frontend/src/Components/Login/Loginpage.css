@@ -1,83 +1,125 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-.login-container {
+/* Full-screen background with blur effect */
+body {
+  color: #555555;
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #f0f0f0;
+  margin: 0;
 }
 
+.login-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh; /* Fullscreen */
+  background-color: #e0cfbc; /* Set background color */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Centered login box */
 .login-box {
-  background-color: #fff;
+  background-color: #374350;
   padding: 40px;
-  border-radius: 8px;
-  width: 100%;
+  border-radius: 12px;
+  width: 90%; /* Makes it responsive */
   max-width: 400px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Ensures inner elements are aligned */
+  align-items: center;
 }
 
+/* Login heading */
 h2 {
-  color: #333;
-  font-size: 36px;
+  color: wheat;
+  font-size: 30px;
+  font-weight: bold;
   margin-bottom: 20px;
 }
 
+/* Input container */
 .textbox {
-  margin-bottom: 20px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 15px;
 }
 
+/* Centered input fields */
 .textbox input {
-  width: 100%;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  outline: none;
-}
-
-.textbox input:focus {
-  border-color: #4CAF50;
-}
-
-.login-btn {
-  width: 100%;
+  width: 90%; /* Adjusted to make it more centered */
   padding: 12px;
-  background-color: #4CAF50;
-  border: none;
-  border-radius: 4px;
   font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  outline: none;
+  background: rgba(180, 193, 140, 0.2);
   color: white;
+  text-align: center; /* Ensures input text is centered */
+}
+
+/* Input focus effect */
+.textbox input:focus {
+  border: 2px solid wheat;
+  background: rgba(234, 148, 148, 0.3);
+}
+
+/* Centered login button */
+.login-btn {
+  width: 90%;
+  padding: 14px;
+  background: #4CAF50;
+  border: none;
+  border-radius: 6px;
+  font-size: 18px;
+  color: wheat;
   cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s, transform 0.2s;
 }
 
+/* Button hover & click effects */
 .login-btn:hover {
-  background-color: #45a049;
+  background: #45a049;
+  transform: scale(1.05);
 }
 
+.login-btn:active {
+  transform: scale(0.98);
+}
+
+/* Error message */
 .error-message {
-  color: red;
+  color: #ff4d4d;
+  font-size: 14px;
   margin-top: 10px;
 }
 
+/* Centered links */
 .links {
   margin-top: 15px;
+  width: 100%;
+  text-align: center;
 }
 
 .links a {
-  color: #333;
+  color: white;
   text-decoration: none;
   font-size: 14px;
-  margin: 5px 0;
+  margin: 5px;
   display: inline-block;
+  transition: color 0.3s;
 }
 
 .links a:hover {
   text-decoration: underline;
+  color: #4CAF50;
 }
-

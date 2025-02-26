@@ -21,7 +21,6 @@ body {
   margin-bottom: 20px;
 }
 
-
 /* Game Container */
 .game1 {
   background: rgba(0, 0, 0, 0.85);
@@ -62,12 +61,13 @@ body {
 
 /* Options Container */
 .options {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Ensures buttons align perfectly */
   gap: 12px;
   margin-top: 10px;
   width: 100%;
   justify-content: center;
+  align-items: center;
 }
 
 /* Option Buttons */
@@ -75,21 +75,27 @@ body {
   background: #F66435;
   border: none;
   color: white;
-  font-size: 18px;
+  font-size: 22px; /* Increase font size for readability */
   font-weight: bold;
-  padding: 15px;
+  padding: 15px 0; /* Adjust padding */
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
-  width: 45%;
-  max-width: 200px;
+  width: 48%; /* Set width dynamically to maintain consistency */
+  max-width: 220px; /* Limit max width */
   text-align: center;
+  min-height: 60px; /* Ensure equal height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap; /* Prevents text from breaking */
 }
 
 .option-btn:hover {
   background: #ff4b4b;
   transform: scale(1.05);
 }
+
 
 /* Correct Answer Animation */
 .correct {
@@ -162,6 +168,7 @@ canvas {
   pointer-events: none;
 }
 
+/* Countdown Timer */
 .countdown {
   display: flex;
   justify-content: center;
@@ -184,4 +191,3 @@ canvas {
     transform: scale(1);
   }
 }
-

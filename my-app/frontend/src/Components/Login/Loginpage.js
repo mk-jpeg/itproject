@@ -59,7 +59,7 @@ const LoginPage = () => {
   return (
     <div className="login-container">
       <div className="login-box">
-        <h2>Read-orama!</h2>
+        <h2>LOGIN</h2>
         <form onSubmit={handleLogin}>
           <div className="textbox">
             <input

@@ -1,0 +1,124 @@
+/* General Styles */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins';
+  background: linear-gradient(to right, #3b6dd4, #2b50a3); /* Adjust gradient colors */
+}
+
+/* Login Button */
+.signin-button {
+  background-color: #c68ae5; /* Accent Color - Light Purple */
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.signin-button:hover {
+  background-color: #9b66b2; /* Darker shade of purple */
+  transform: scale(1.05);
+}
+
+/* Content Section */
+.content-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+/* Card Container */
+.card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+  flex-wrap: wrap;
+  max-width: 900px;
+  margin-top: 32px;
+}
+
+/* Card */
+.card {
+  background-color: #ffffff; /* White background */
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+  width: 320px; /* Fixed size for better layout */
+}
+
+.card:hover {
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px); /* Subtle lift on hover */
+}
+
+.icon-container {
+  background-color: rgba(0, 121, 107, 0.1); /* Light Teal background */
+  padding: 16px;
+  border-radius: 50%;
+  margin-bottom: 16px;
+}
+
+.icon {
+  font-size: 3rem;
+  color: #c68ae5; /* Primary Color - Teal */
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #555555; /* Muted Gray */
+  margin-bottom: 16px;
+}
+
+.card-description {
+  font-size: 1rem;
+  color: #555555;
+  margin-bottom: 24px;
+}
+
+/* Continue Button */
+.continue-button {
+  background-color: #c68ae5; /* Light Purple */
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  max-width: 240px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.continue-button:hover {
+  background-color: #9b66b2; /* Darker Purple */
+  transform: scale(1.05);
+}
+
+
+/* Responsive Styling */
+@media (max-width: 768px) {
+  .card-container {
+    flex-direction: column; /* Stack the cards vertically on smaller screens */
+    align-items: center;
+  }
+
+  .navbar .container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .logo h1 {
+    font-size: 1.4rem;
+  }
+}

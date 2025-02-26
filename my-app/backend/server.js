@@ -8,7 +8,6 @@ const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const wordRoutes = require("./routes/wordRoutes");
 const grammarWordRoutes = require("./routes/grammarWordRoutes");
-const progressRoutes = require("./routes/progressRoutes"); // ✅ Import progress routes
 
 
 // Load environment variables
@@ -27,7 +26,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api", wordRoutes);
 app.use("/api/grammarWord", grammarWordRoutes);
-app.use("/api/progress", progressRoutes); 
+
 
 
 

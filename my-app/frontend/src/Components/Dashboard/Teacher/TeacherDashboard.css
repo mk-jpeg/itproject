@@ -1,72 +1,117 @@
-:root {
-    --color-primary: #0A8537;
-    --color-primary-foreground: #FFFFFF;
-    --color-secondary: #F0F1F3;
-    --color-secondary-foreground: #020817;
-    --color-accent: #6D7074;
-    --color-accent-foreground: #020817;
-    --color-background: #FAFAFB;
-    --color-foreground: #020817;
-    --color-card: #FFFFFF;
-    --color-card-foreground: #020817;
-    --color-popover: #FFFFFF;
-    --color-popover-foreground: #020817;
-    --color-muted: #F0F1F3;
-    --color-muted-foreground: #6D7074;
-    --color-destructive: #FF4C4C;
-    --color-destructive-foreground: #FFFFFF;
-    --color-border: #E0E0E0;
-    --color-input: #E0E0E0;
-    --color-ring: #0A8537;
-    --color-chart-1: #FF6F61;
-    --color-chart-2: #4CAF50;
-    --color-chart-3: #03A9F4;
-    --color-chart-4: #FFC107;
-    --color-chart-5: #8E44AD;
-    
-    --border-radius-sm: 0.125rem;
-    --box-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    
-    --font-sans: 'Inter', sans-serif;
-    --font-size-heading: 28px;
-    --font-size-body: 16px;
-    --font-weight-heading: 600;
-    --font-weight-body: 400;
+/* Navbar */
+.navbar {
+  width: 100%;
+  background: linear-gradient(90deg, #9b59b6, #6c5ce7);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px; /* Adjusted to match homepage */
+  height: 80px; /* Adjusted height */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+  border-radius: 0 0 40px 40px; /* Rounded bottom corners to match homepage */
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+/* Game Progress Title - Left Side */
+.game-title {
+  font-size: 1.8rem; /* Slightly larger for homepage consistency */
+  font-weight: bold;
+  color: white;
+}
+
+/* Logout Button - Right Side */
+.logout-button {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: 1px solid white;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  font-weight: bold;
+}
+
+.logout-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.05);
+}
+
+/* Teacher Dashboard Title - Below Navbar */
+.dashboard-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: gold;
+  text-align: left;
+  margin: 110px 40px 20px; /* Adjusted for correct spacing */
+}
+
+/* Dashboard Container */
+.dashboard-container {
+  max-width: 90%;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 20px;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Table */
+.table-container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-container th, .table-container td {
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 14px;
+  text-align: left;
+  font-size: 1.1rem;
+  color: black;
+}
+
+.table-container th {
+  background-color: rgba(59, 109, 212, 0.8);
+  color: white;
+}
+
+/* Game Progress Section */
+.game-progress-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+  gap: 20px;
+}
+
+.game-card {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  padding: 20px;
+  border-radius: 12px;
+  width: 48%;
+  text-align: center;
+  color: white;
+  font-size: 1.2rem;
+}
+
+.game-card h2 {
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .game-progress-container {
+    flex-direction: column;
   }
-  
-  body {
-    font-family: var(--font-sans);
-    background-color: var(--color-background);
-    color: var(--color-foreground);
+
+  .game-card {
+    width: 100%;
   }
-  
-  .heading {
-    font-size: var(--font-size-heading);
-    font-weight: var(--font-weight-heading);
-  }
-  
-  .body-text {
-    font-size: var(--font-size-body);
-    font-weight: var(--font-weight-body);
-  }
-  
-  .card {
-    background-color: var(--color-card);
-    color: var(--color-card-foreground);
-    border-radius: var(--border-radius-sm);
-    box-shadow: var(--box-shadow-sm);
-    padding: 1rem;
-  }
-  
-  .button-primary {
-    background-color: var(--color-primary);
-    color: var(--color-primary-foreground);
-    padding: 0.5rem 1rem;
-    border-radius: var(--border-radius-sm);
-    transition: background-color 0.2s;
-  }
-  
-  .button-primary:hover {
-    background-color: darken(var(--color-primary), 10%);
-  }
-  
+}

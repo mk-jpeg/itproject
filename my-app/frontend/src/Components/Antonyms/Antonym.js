@@ -5,24 +5,23 @@ import "./Antonym.css";
 
 const Antonym = () => {
   const { width, height } = useWindowSize();
-  const [wordData, setWordData] = useState([]); // Stores all words from API
-  const [usedWords, setUsedWords] = useState([]); // Tracks words already used
+  const [wordData, setWordData] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
   const [feedback, setFeedback] = useState("");
   const [shake, setShake] = useState(false);
   const [options, setOptions] = useState([]);
-  const [countdown, setCountdown] = useState(3); // Countdown timer
+  const [countdown, setCountdown] = useState(3);
   const [gameStarted, setGameStarted] = useState(false);
+  const [showExit, setShowExit] = useState(false); // Controls when the Exit button appears
 
-  // Countdown before the game starts
   useEffect(() => {
     const timer = setInterval(() => {
       setCountdown((prev) => {
         if (prev === 1) {
           clearInterval(timer);
-          setGameStarted(true); // Start game after countdown
+          setGameStarted(true);
         }
         return prev - 1;
       });
@@ -30,24 +29,22 @@ const Antonym = () => {
     return () => clearInterval(timer);
   }, []);
 
-  // Fetch words from API once the game starts
   useEffect(() => {
     if (gameStarted) {
       fetch("http://localhost:5000/api/words")
         .then((response) => response.json())
         .then((data) => {
           setWordData(data);
-          setUsedWords(data);
           loadNewWord(0, data);
         })
         .catch((error) => console.error("Error fetching words:", error));
     }
   }, [gameStarted]);
 
-  // Load a new word based on index
   const loadNewWord = (index, data) => {
     if (index >= data.length) {
       setGameOver(true);
+      setTimeout(() => setShowExit(true), 5000); // Show Exit button after 5 seconds
       return;
     }
 
@@ -61,7 +58,6 @@ const Antonym = () => {
     setOptions(shuffleArray(allOptions));
   };
 
-  // Handle answer selection
   const handleOptionClick = (selectedOption) => {
     if (!wordData[currentIndex]) return;
 
@@ -82,7 +78,6 @@ const Antonym = () => {
     }, 1000);
   };
 
-  // Shuffle array utility
   const shuffleArray = (array) => array.sort(() => Math.random() - 0.5);
 
   return (
@@ -113,9 +108,15 @@ const Antonym = () => {
             </>
           ) : (
             <div className="game-over">
-              <Confetti width={width} height={height} />
+              {!showExit && <Confetti width={width} height={height} />} {/* Confetti will stop when showExit is true */}
               <h1>🎉 Good Job! 🎉</h1>
               <h2>Final Score: {score}</h2>
+
+              {showExit && (
+                <button className="exit-btn" onClick={() => window.location.href = "/student-dashboard"}>
+                  Exit
+                </button>
+              )}
             </div>
           )}
         </div>

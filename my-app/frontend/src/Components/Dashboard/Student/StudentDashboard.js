@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaBookReader, FaLanguage } from "react-icons/fa";
-import { SiAnimalplanet } from "react-icons/si";
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -64,27 +63,23 @@ const StudDashboard = () => {
 
   return (
     <div className="dashboard-container">
-      
-      <nav className="navbar bg-blue-500 p-4 shadow-lg">
-        <div className="container mx-auto flex justify-between items-center">
-          <div className="logo flex items-center">
-            <SiAnimalplanet className="text-3xl" />
-            <h1 className="ml-2 text-2xl font-bold text-white hover:scale-105 transition-transform duration-300">
-              Read-O-Rama
-            </h1>
-          </div>
-        </div>
+      <nav className="navbar">
+        <ul className="navbar-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/logout">Logout</a></li>
+        </ul>
       </nav>
-
-      {/* Dashboard Content */}
       <div className="content-container">
         <div className="dashboard-header">
+          <h1 className="word-exe-title" style={{ fontSize: "3rem" }}>Word.exe</h1>
           <h2>Welcome {studentData.name}!</h2>
-          <p style={{ fontFamily: 'Nunito, sans-serif', fontSize: '1.5rem', color: '#f4efca' }}>Time to unleash your inner word wizard.</p>
+          <p className="intro-text">Every word you learn is a step toward mastery.<br />
+            Take the challenge and watch your skills soar.</p>
         </div>
 
+        {/* Cards Section */}
         <div className="card-container">
-          <div className="card antonym-card">
+          <div className="card">
             <div className="icon-container">
               <FaBookReader className="icon" />
             </div>
@@ -97,13 +92,13 @@ const StudDashboard = () => {
             </button>
           </div>
 
-          <div className="card grammar-card">
+          <div className="card">
             <div className="icon-container">
               <FaLanguage className="icon" />
             </div>
             <h2 className="card-title">Grammar Sorting</h2>
             <p className="card-description">
-              Organize and classify grammatical elements with ease.
+              Organize and classify grammatical elements.
             </p>
             <button className="continue-button" onClick={() => navigate("/GrammarsSort")}>
               Continue
