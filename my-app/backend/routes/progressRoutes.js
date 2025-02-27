@@ -1,99 +1,102 @@
 const express = require("express");
 const router = express.Router();
-const progressController = require("../controllers/ProgressController");
-const { verifyUser } = require("../middleware/authMiddleware"); // Assuming you have authentication
+const Progress = require("../models/progressModel");
 
 /**
  * @swagger
- * /api/progress/{userId}:
+ * /api/progress/student/{studentId}:
  *   get:
- *     summary: Get all progress records for a user
- *     tags: [Progress]
- *     security:
- *       - BearerAuth: []
+ *     summary: Get a specific student's progress
+ *     description: Retrieve the progress of a logged-in student by their ID.
  *     parameters:
  *       - in: path
- *         name: userId
+ *         name: studentId
  *         required: true
- *         description: ID of the user
  *         schema:
  *           type: string
+ *         description: The ID of the student whose progress is being fetched.
  *     responses:
  *       200:
- *         description: User progress retrieved successfully
+ *         description: Successfully retrieved student's progress.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   studentId:
+ *                     type: string
+ *                     description: The student's ID.
+ *                   game:
+ *                     type: string
+ *                     description: The name of the game.
+ *                   score:
+ *                     type: integer
+ *                     description: The student's score in the game.
+ *                   date:
+ *                     type: string
+ *                     format: date-time
+ *                     description: The date the progress was recorded.
  *       404:
- *         description: No progress found
+ *         description: No progress found for the student.
  *       500:
- *         description: Server error
+ *         description: Server error.
  */
-router.get("/:userId", verifyUser, progressController.getUserProgress);
+router.get("/student/:studentId", async (req, res) => {
+  try {
+    const studentId = req.params.studentId;
+    const progress = await Progress.find({ studentId });
+    
+    if (!progress.length) {
+      return res.status(404).json({ error: "No progress found for this student" });
+    }
+
+    res.json(progress);
+  } catch (error) {
+    res.status(500).json({ error: "Error fetching student progress" });
+  }
+});
 
 /**
  * @swagger
- * /api/progress/{userId}/{gameType}:
+ * /api/progress/all:
  *   get:
- *     summary: Get progress for a specific game
- *     tags: [Progress]
- *     security:
- *       - BearerAuth: []
- *     parameters:
- *       - in: path
- *         name: userId
- *         required: true
- *         description: ID of the user
- *         schema:
- *           type: string
- *       - in: path
- *         name: gameType
- *         required: true
- *         description: Type of game (grammarSort or antonymGame)
- *         schema:
- *           type: string
+ *     summary: Get all students' progress
+ *     description: Retrieve the progress data for all students (for the Teacher Dashboard).
  *     responses:
  *       200:
- *         description: Game progress retrieved successfully
- *       404:
- *         description: No progress found for this game
+ *         description: Successfully retrieved all students' progress.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   studentId:
+ *                     type: string
+ *                     description: The student's ID.
+ *                   game:
+ *                     type: string
+ *                     description: The name of the game.
+ *                   score:
+ *                     type: integer
+ *                     description: The student's score in the game.
+ *                   date:
+ *                     type: string
+ *                     format: date-time
+ *                     description: The date the progress was recorded.
  *       500:
- *         description: Server error
+ *         description: Server error.
  */
-router.get("/:userId/:gameType", verifyUser, progressController.getGameProgress);
-
-/**
- * @swagger
- * /api/progress/update:
- *   post:
- *     summary: Update or create progress record for a user
- *     tags: [Progress]
- *     security:
- *       - BearerAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - userId
- *               - gameType
- *               - score
- *             properties:
- *               userId:
- *                 type: string
- *                 description: ID of the user
- *               gameType:
- *                 type: string
- *                 enum: [grammarSort, antonymGame]
- *                 description: The type of game
- *               score:
- *                 type: number
- *                 description: The score to be added
- *     responses:
- *       200:
- *         description: Progress updated successfully
- *       500:
- *         description: Server error
- */
-router.post("/update", verifyUser, progressController.updateProgress);
+router.get("/all", async (req, res) => {
+  try {
+    const progress = await Progress.find();
+    res.json(progress);
+  } catch (error) {
+    res.status(500).json({ error: "Error fetching progress data" });
+  }
+});
 
 module.exports = router;

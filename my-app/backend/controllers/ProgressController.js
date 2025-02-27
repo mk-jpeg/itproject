@@ -1,68 +1,34 @@
 const Progress = require("../models/Progress");
 
-// Get all progress records for a specific user
-exports.getUserProgress = async (req, res) => {
-  try {
-    const { userId } = req.params;
-    const progress = await Progress.find({ userId });
-
-    if (!progress || progress.length === 0) {
-      return res.status(404).json({ message: "No progress found for this user." });
+// Save progress
+exports.saveProgress = async (req, res) => {
+    try {
+        const { userId, game, score } = req.body;
+        const progress = new Progress({ userId, game, score, date: new Date() });
+        await progress.save();
+        res.status(201).json({ message: "Progress saved successfully!" });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
-
-    res.json(progress);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
 };
 
-// Get progress for a specific game
-exports.getGameProgress = async (req, res) => {
-  try {
-    const { userId, gameType } = req.params;
-    const progress = await Progress.findOne({ userId, gameType });
-
-    if (!progress) {
-      return res.status(404).json({ message: "No progress found for this game." });
+// Get specific student's progress
+exports.getStudentProgress = async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const progress = await Progress.find({ userId });
+        res.status(200).json(progress);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
-
-    res.json({
-      userId: progress.userId,
-      gameType: progress.gameType,
-      attempts: progress.attempts,
-      totalScore: progress.totalScore,
-      averageScore: progress.attempts > 0 ? progress.totalScore / progress.attempts : 0
-    });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
 };
 
-// Update or create progress record
-exports.updateProgress = async (req, res) => {
-  try {
-    const { userId, gameType } = req.body;
-    const { score } = req.body;
-
-    let progress = await Progress.findOne({ userId, gameType });
-
-    if (progress) {
-      // Update existing record
-      progress.attempts += 1;
-      progress.totalScore += score;
-    } else {
-      // Create new progress record
-      progress = new Progress({
-        userId,
-        gameType,
-        attempts: 1,
-        totalScore: score
-      });
+// Get all students' progress for teacher dashboard
+exports.getAllStudentsProgress = async (req, res) => {
+    try {
+        const progress = await Progress.find();
+        res.status(200).json(progress);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
-
-    await progress.save();
-    res.json(progress);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
 };

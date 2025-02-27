@@ -1,70 +1,45 @@
-import React, { useState, useEffect } from "react";
-import confetti from "canvas-confetti";
+import React, { useEffect, useState } from "react";
+import Confetti from "react-confetti";
+import { useWindowSize } from "react-use";
 import "./GrammarSort.css";
 
-function GrammarSort() {
-  const initialWords = {
-    noun: ["dog", "apple", "house", "car", "tree", "book", "river", "mountain", "pencil", "ocean"],
-    verb: ["run", "jump", "write", "sing", "dance", "climb", "drive", "swim", "read", "paint"],
-    both: ["play", "watch", "help", "move", "work", "cook", "draw", "paint", "cycle", "shop"],
-  };
-
+const GrammarSort = () => {
+  const { width, height } = useWindowSize();
+  const [wordData, setWordData] = useState([]);
   const [score, setScore] = useState(0);
-  const [roundCount, setRoundCount] = useState(0); // Track rounds
+  const [roundCount, setRoundCount] = useState(0);
   const [draggedWord, setDraggedWord] = useState(null);
   const [feedback, setFeedback] = useState("");
   const [boxes, setBoxes] = useState({ noun: [], verb: [], both: [] });
-  const [remainingWords, setRemainingWords] = useState({ ...initialWords });
-  const [currentWords, setCurrentWords] = useState([]);
   const [showNext, setShowNext] = useState(false);
   const [gameOver, setGameOver] = useState(false);
+  const [showExit, setShowExit] = useState(false);
+  const [currentWords, setCurrentWords] = useState([]);
 
   useEffect(() => {
-    getNewWords();
+    fetch("http://localhost:5000/api/grammar")
+      .then((response) => response.json())
+      .then((data) => {
+        setWordData(data);
+        selectNewWords(data);
+      })
+      .catch((error) => console.error("Error fetching words:", error));
   }, []);
 
-  const getNewWords = () => {
-    if (roundCount >= 5) {
-      setFeedback(`🎉 Game Over! Final Score: ${score}`);
-      setGameOver(true);
-      triggerConfetti();
-      return;
+  const selectNewWords = (data) => {
+    const nouns = data.filter((word) => word.category === "noun");
+    const verbs = data.filter((word) => word.category === "verb");
+    const both = data.filter((word) => word.category === "both");
+    
+    if (nouns.length && verbs.length && both.length) {
+      const selectedWords = [
+        nouns[Math.floor(Math.random() * nouns.length)],
+        verbs[Math.floor(Math.random() * verbs.length)],
+        both[Math.floor(Math.random() * both.length)],
+      ];
+      setCurrentWords(selectedWords.sort(() => Math.random() - 0.5));
     }
-  
-    const { noun, verb, both } = remainingWords;
-  
-    if (noun.length === 0 || verb.length === 0 || both.length === 0) {
-      setFeedback(`🎉 Game Over! Final Score: ${score}`);
-      setGameOver(true);
-      return;
-    }
-  
-    const newNoun = noun[Math.floor(Math.random() * noun.length)];
-    const newVerb = verb[Math.floor(Math.random() * verb.length)];
-    const newBoth = both[Math.floor(Math.random() * both.length)];
-  
-    let newWords = [
-      { word: newNoun, category: "noun" },
-      { word: newVerb, category: "verb" },
-      { word: newBoth, category: "both" },
-    ];
-  
-    // Shuffle the words array
-    newWords = newWords.sort(() => Math.random() - 0.5);
-  
-    setCurrentWords(newWords);
-  
-    setRemainingWords({
-      noun: noun.filter((word) => word !== newNoun),
-      verb: verb.filter((word) => word !== newVerb),
-      both: both.filter((word) => word !== newBoth),
-    });
-  
-    setBoxes({ noun: [], verb: [], both: [] });
-    setFeedback("");
-    setShowNext(false);
   };
-  
 
   const handleDragStart = (word) => {
     setDraggedWord(word);
@@ -72,68 +47,65 @@ function GrammarSort() {
 
   const handleDrop = (category) => {
     if (!draggedWord) return;
-
     setBoxes((prev) => ({
       ...prev,
       [category]: [...prev[category], draggedWord.word],
     }));
-
     setDraggedWord(null);
   };
 
-  const triggerConfetti = () => {
-    confetti({
-      particleCount: 200,
-      spread: 80,
-      origin: { y: 0.6 },
-    });
+  const checkAnswers = () => {
+    setShowNext(true);
+    setRoundCount((prev) => prev + 1);
+    
+    fetch("http://localhost:5000/api/progress", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ score, round: roundCount + 1, game: "Grammar Sort" })
+    }).catch((error) => console.error("Error saving progress:", error));
   };
 
-  const checkAnswers = () => {
-    let correct = 0;
-
-    currentWords.forEach((word) => {
-      if (boxes[word.category].includes(word.word)) {
-        correct++;
-      }
-    });
-
-    if (correct === 3) {
-      setScore((prev) => prev + 1);
-      setFeedback(" Correct! ");
-      setShowNext(true);
-      setRoundCount((prev) => prev + 1); // Increase round count
-    } else {
-      setFeedback("❌ Incorrect! Try again.");
+  const nextRound = () => {
+    if (roundCount >= 5) {
+      setGameOver(true);
+      setTimeout(() => setShowExit(true), 2000);
+      return;
     }
+    setBoxes({ noun: [], verb: [], both: [] });
+    setFeedback("");
+    setShowNext(false);
+    selectNewWords(wordData);
   };
 
   const resetGame = () => {
     setScore(0);
     setRoundCount(0);
-    setRemainingWords({ ...initialWords });
     setFeedback("");
     setShowNext(false);
     setGameOver(false);
-    getNewWords();
+    setShowExit(false);
+    selectNewWords(wordData);
   };
 
   return (
     <div className="game-container">
-      <h1>Grammar Sort Game</h1>
-      <h2 className="score">Score: {score}</h2>
-      <h3 className="round">Round: {roundCount}/5</h3>
-
       {gameOver ? (
         <div className="game-over">
-          <h2>🎉 Game Over! 🎉</h2>
+          <Confetti width={width} height={height} />
+          <h1>🎉 Game Over! 🎉</h1>
           <h2>Final Score: {score}</h2>
-          <button className="option-btn" onClick={resetGame}>
-            Restart Game
-          </button>
+          {showExit && (
+            <button className="exit-btn styled-exit" onClick={() => window.location.href = "/student-dashboard"}>
+              Exit
+            </button>
+          )}
         </div>
       ) : (
         <>
+          <h1>Grammar Sort Game</h1>
+          <h2 className="score">Score: {score}</h2>
+          <h3 className="round">Round: {roundCount}/5</h3>
+
           <div className="word-bank">
             {currentWords.map((word, index) => (
               <div
@@ -167,23 +139,18 @@ function GrammarSort() {
 
           <div className="buttons">
             {!showNext ? (
-              <button className="option-btn" onClick={checkAnswers}>
-                Check
-              </button>
+              <>
+                <button className="option-btn" onClick={checkAnswers}>Check</button>
+                <button className="option-btn" onClick={resetGame}>Restart</button>
+              </>
             ) : (
-              <button className="option-btn" onClick={getNewWords}>
-                Next
-              </button>
+              <button className="option-btn" onClick={nextRound}>Next</button>
             )}
-
-            <button className="option-btn" onClick={resetGame}>
-              Restart
-            </button>
           </div>
         </>
       )}
     </div>
   );
-}
+};
 
 export default GrammarSort;
