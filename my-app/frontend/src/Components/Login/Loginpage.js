@@ -57,54 +57,57 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="login-container">
-      <div className="login-box">
-        <h2>LOGIN</h2>
-        <form onSubmit={handleLogin}>
-          <div className="textbox">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div className="textbox">
-            <input
-              type="password"
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-          <button type="submit" className="login-btn">
-            Login
-          </button>
-        </form>
-      </div>
-      {/* Snackbar for Success Message */}
-      <Snackbar open={openSnackbar} autoHideDuration={1500}>
-        <Alert severity="success">Login successful! Redirecting...</Alert>
-      </Snackbar>
+    <div className="page-container">
+      <h1 className="title">word<br></br>.exe</h1> {/* Title outside and on the left */}
+      <div className="login-container">
+        <div className="login-box">
+          <h2>LOGIN</h2>
+          <form onSubmit={handleLogin}>
+            <div className="textbox">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            <div className="textbox">
+              <input
+                type="password"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+            <button type="submit" className="login-btn">
+              Login
+            </button>
+          </form>
+        </div>
+        {/* Snackbar for Success Message */}
+        <Snackbar open={openSnackbar} autoHideDuration={1500}>
+          <Alert severity="success">Login successful! Redirecting...</Alert>
+        </Snackbar>
 
-      {/* Dialog for Login Failure */}
-      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-        <DialogTitle>Error</DialogTitle>
-        <DialogContent>
-          <DialogContentText>{error}</DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={() => setOpenDialog(false)}
-            color="primary"
-            autoFocus
-          >
-            OK
-          </Button>
-        </DialogActions>
-      </Dialog>
+        {/* Dialog for Login Failure */}
+        <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+          <DialogTitle>Error</DialogTitle>
+          <DialogContent>
+            <DialogContentText>{error}</DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() => setOpenDialog(false)}
+              color="primary"
+              autoFocus
+            >
+              OK
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
     </div>
   );
 };

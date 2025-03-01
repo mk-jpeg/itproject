@@ -1,7 +1,7 @@
 /* Navbar */
 .navbar {
   width: 100%;
-  background: linear-gradient(90deg, #9b59b6, #6c5ce7);
+  background-color: 374350;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -19,13 +19,14 @@
 .game-title {
   font-size: 1.8rem; /* Slightly larger for homepage consistency */
   font-weight: bold;
-  color: white;
+  position: left;
+  color: wheat;
 }
 
 /* Logout Button - Right Side */
 .logout-button {
   background: rgba(255, 255, 255, 0.2);
-  color: white;
+  color: green;
   padding: 10px 18px;
   border-radius: 8px;
   border: 1px solid white;
@@ -60,58 +61,51 @@
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-
-/* Table */
-.table-container table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.table-container th, .table-container td {
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 14px;
-  text-align: left;
-  font-size: 1.1rem;
-  color: black;
-}
-
-.table-container th {
-  background-color: rgba(59, 109, 212, 0.8);
-  color: white;
-}
-
-/* Game Progress Section */
-.game-progress-container {
+/* Center the table container */
+.table-container {
   display: flex;
-  justify-content: space-between;
-  margin-top: 40px;
-  gap: 20px;
+  justify-content: center; /* Centers the table horizontally */
+  align-items: center; /* Centers the table vertically if needed */
+  width: 100%;
+  margin-top: 20px;
 }
 
-.game-card {
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-  padding: 20px;
-  border-radius: 12px;
-  width: 48%;
+/* Style for the table */
+table {
+  width: 80%; /* Adjust width as needed */
+  max-width: 1000px; /* Prevents table from getting too wide */
+  border-collapse: collapse;
+  background-color: rgb(248, 238, 238);
   text-align: center;
-  color: white;
-  font-size: 1.2rem;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.game-card h2 {
-  margin-bottom: 10px;
-  font-size: 1.5rem;
-  font-weight: bold;
+/* Table header styling */
+th {
+  background-color: #823055;
+  color: rgb(16, 14, 14);
+  padding: 12px;
 }
 
-/* Responsive Design */
+/* Table rows */
+td {
+  padding: 10px;
+  border-bottom: 1px solid #100f0f;
+  color: #000;
+}
+
+/* Center text within table cells */
+td, th {
+  text-align: center;
+  color: #000;
+}
+
+/* Responsive fix for smaller screens */
 @media (max-width: 768px) {
-  .game-progress-container {
-    flex-direction: column;
-  }
-
-  .game-card {
-    width: 100%;
+  table {
+    width: 95%; /* Slightly wider for smaller screens */
   }
 }
+

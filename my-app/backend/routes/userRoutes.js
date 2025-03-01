@@ -19,6 +19,6 @@ const { verifyTeacher } = require("../middleware/authMiddleware");
  *       500:
  *         description: Server error
  */
-router.get("/students", verifyTeacher, userController.getStudents);
+router.get("/students", verifyTeacher, userController.getAllStudents);
 
 module.exports = router;

@@ -11,13 +11,20 @@ body {
   margin: 0;
 }
 
+/* Container for Centering */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh; /* Full viewport height */
+}
+
 /* Heading outside game container */
 .game-heading {
-  font-family: 'Poppins', sans-serif;
   font-size: 36px;
   font-weight: bold;
   color: #f4efca;
-  text-align: center;
   margin-bottom: 20px;
 }
 
@@ -34,6 +41,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  text-align: center;
 }
 
 /* Score Display */
@@ -52,48 +60,49 @@ body {
   border-radius: 12px;
   margin-bottom: 20px;
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
-  text-align: center;
   font-size: 24px;
   font-weight: bold;
   width: 100%;
   max-width: 450px;
 }
 
+/* Option Buttons */
 .option-btn {
-  font-size: 1.5rem; /* Increase text size */
-  padding: 15px 30px; /* Increase button size */
-  width: 250px; /* Set a fixed width */
-  height: 70px; /* Set a fixed height */
-  border-radius: 12px; /* Rounded corners */
-  background-color: #ff9800; /* Match theme color */
-  color: white; /* Text color */
+  font-size: 1.5rem;
+  padding: 15px 30px;
+  width: 250px;
+  height: 70px;
+  border-radius: 12px;
+  background-color: #ff9800;
+  color: white;
   font-weight: bold;
   border: none;
   cursor: pointer;
-  transition: transform 0.2s ease, background-color 0.3s ease;
+  transition: transform 0.2s ease, background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .option-btn:hover {
-  background-color: #e68900; /* Darker shade on hover */
-  transform: scale(1.05); /* Slightly enlarge */
+  background-color: #e68900;
+  transform: scale(1.05);
+  box-shadow: 0px 5px 15px rgba(255, 152, 0, 0.5);
 }
 
 .option-btn:active {
-  transform: scale(0.95); /* Click effect */
+  transform: scale(0.95);
 }
-
-
 
 /* Correct Answer Animation */
 .correct {
   background: #0cfd70 !important;
-  color: #0cfd70 !important;
+  color: white !important;
   animation: popEffect 0.3s ease-in-out;
 }
 
 /* Incorrect Answer */
 .incorrect {
   background: #e74c3c !important;
+  color: white !important;
+  animation: shake 0.5s ease-in-out;
 }
 
 /* Pop Effect */
@@ -110,10 +119,6 @@ body {
   40%, 80% { transform: translateX(10px); }
 }
 
-.shake {
-  animation: shake 0.5s ease-in-out;
-}
-
 /* Feedback Message */
 .feedback {
   font-size: 22px;
@@ -122,6 +127,8 @@ body {
   padding: 10px 20px;
   border-radius: 8px;
   display: inline-block;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
 }
 
 /* Game Over Screen */
@@ -155,20 +162,22 @@ canvas {
   pointer-events: none;
 }
 
+/* Countdown Text */
 .countdown h1 {
-  font-size: 4rem; 
+  font-size: 4rem;
   font-weight: bold;
   text-align: center;
-  color: #FFD700; 
+  color: #FFD700;
 }
 
+/* Exit Button */
 .exit-btn {
-  font-size: 1.5rem; /* Same size as option buttons */
-  padding: 15px 30px; 
-  width: 100px; 
-  height: 60px; 
-  border-radius: 12px; 
-  background-color: #ff9800; /* Match theme color */
+  font-size: 1.5rem;
+  padding: 15px 30px;
+  width: 100px;
+  height: 60px;
+  border-radius: 12px;
+  background-color: #ff9800;
   color: white;
   font-weight: bold;
   border: none;
@@ -177,15 +186,15 @@ canvas {
 }
 
 .exit-btn:hover {
-  background-color: #e68900; /* Darker shade on hover */
-  transform: scale(1.05); 
+  background-color: #e68900;
+  transform: scale(1.05);
 }
 
 .exit-btn:active {
   transform: scale(0.95);
 }
 
-
+/* Fade In Effect */
 @keyframes fadeIn {
   from {
     opacity: 0;

@@ -1,6 +1,39 @@
 const express = require("express");
 const router = express.Router();
-const Progress = require("../models/progressModel");
+const progressController = require("../controllers/ProgressController");
+
+/**
+ * @swagger
+ * /api/progress/save:
+ *   post:
+ *     summary: Save a student's progress in a game
+ *     description: Allows a student to save their progress (score) after completing a game.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               studentId:
+ *                 type: string
+ *                 description: The ID of the student.
+ *               game:
+ *                 type: string
+ *                 enum: ["Antonym Game", "Grammar Game"]
+ *                 description: The name of the game the student played.
+ *               score:
+ *                 type: integer
+ *                 description: The score the student achieved in the game.
+ *     responses:
+ *       201:
+ *         description: Progress saved successfully.
+ *       400:
+ *         description: Missing required fields or invalid data.
+ *       500:
+ *         description: Server error.
+ */
+router.post("/save", progressController.saveProgress);  // Route to save progress
 
 /**
  * @swagger
@@ -43,20 +76,7 @@ const Progress = require("../models/progressModel");
  *       500:
  *         description: Server error.
  */
-router.get("/student/:studentId", async (req, res) => {
-  try {
-    const studentId = req.params.studentId;
-    const progress = await Progress.find({ studentId });
-    
-    if (!progress.length) {
-      return res.status(404).json({ error: "No progress found for this student" });
-    }
-
-    res.json(progress);
-  } catch (error) {
-    res.status(500).json({ error: "Error fetching student progress" });
-  }
-});
+router.get("/student/:studentId", progressController.getStudentProgress);  // Route to get student progress
 
 /**
  * @swagger
@@ -90,13 +110,6 @@ router.get("/student/:studentId", async (req, res) => {
  *       500:
  *         description: Server error.
  */
-router.get("/all", async (req, res) => {
-  try {
-    const progress = await Progress.find();
-    res.json(progress);
-  } catch (error) {
-    res.status(500).json({ error: "Error fetching progress data" });
-  }
-});
+router.get("/all", progressController.getAllStudentsProgress);  // Route to get all students' progress
 
 module.exports = router;

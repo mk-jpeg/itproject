@@ -35,7 +35,7 @@ const RegisterPage = () => {
   return (
     <div className="login-container">
       <div className="login-box">
-        <h2>Register for Read-orama!</h2>
+        <h2>Register for word.exe</h2>
         <form onSubmit={handleRegister}>
           <div className="textbox">
             <input

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const progressSchema = new mongoose.Schema({
   studentId: { type: String, required: true },
-  game: { type: String, required: true },
+  game: { type: String, required: true, enum: ["Antonym Game", "Grammar Game"] },
   score: { type: Number, required: true },
   date: { type: Date, default: Date.now },
 });

@@ -11,6 +11,7 @@ const GrammarRoutes = require("./routes/GrammarRoutes");
 const progressRoutes = require("./routes/progressRoutes");
 
 
+
 // Load environment variables
 dotenv.config();
 
@@ -28,6 +29,7 @@ app.use("/api/users", userRoutes);
 app.use("/api", wordRoutes);
 app.use("/api/grammar", GrammarRoutes);
 app.use("/api/progress", progressRoutes);
+
 
 
 

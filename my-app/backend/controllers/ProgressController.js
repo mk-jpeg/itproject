@@ -1,34 +1,59 @@
-const Progress = require("../models/Progress");
+const Progress = require("../models/progressModel"); // Ensure the correct file path
 
-// Save progress
+// Save a student's game progress
 exports.saveProgress = async (req, res) => {
     try {
-        const { userId, game, score } = req.body;
-        const progress = new Progress({ userId, game, score, date: new Date() });
-        await progress.save();
-        res.status(201).json({ message: "Progress saved successfully!" });
+        const { studentId, game, score } = req.body;
+
+        // Validate request
+        if (!studentId || !game || score === undefined) {
+            return res.status(400).json({ message: "Missing required fields." });
+        }
+
+        // Save progress
+        const newProgress = new Progress({ studentId, game, score });
+        await newProgress.save();
+
+        res.status(201).json({ message: "Progress saved successfully!", progress: newProgress });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ message: "Server error", error: error.message });
     }
 };
 
-// Get specific student's progress
+// Get progress for a specific student
 exports.getStudentProgress = async (req, res) => {
     try {
-        const { userId } = req.params;
-        const progress = await Progress.find({ userId });
+        const { studentId } = req.params;
+
+        // Validate student ID
+        if (!studentId) {
+            return res.status(400).json({ message: "Student ID is required." });
+        }
+
+        const progress = await Progress.find({ studentId });
+
+        if (!progress || progress.length === 0) {
+            return res.status(404).json({ message: "No progress found for this student." });
+        }
+
         res.status(200).json(progress);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ message: "Server error", error: error.message });
     }
 };
 
-// Get all students' progress for teacher dashboard
+// Get all students' progress (for teacher dashboard)
 exports.getAllStudentsProgress = async (req, res) => {
     try {
-        const progress = await Progress.find();
-        res.status(200).json(progress);
+        const progressData = await Progress.find();
+
+        if (!progressData || progressData.length === 0) {
+            return res.status(404).json({ message: "No progress data found." });
+        }
+
+        res.status(200).json(progressData);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ message: "Server error", error: error.message });
     }
 };
+

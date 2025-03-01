@@ -2,17 +2,16 @@ html, body {
   margin: 0;
   padding: 0;
   width: 100%;
-  height: 100vh; /* Ensure it fills the screen */
-  overflow: hidden; /* Prevent scrolling issues */
+  height: 100vh;
+  overflow: hidden;
 }
 
-/* Apply Full-Screen Background */
 .homepage-container {
   position: relative;
   width: 100vw;
   height: 100vh;
   background: url(C:\Users\whale\OneDrive\Desktop\6229854.jpg) no-repeat center center fixed;
-  background-size: cover; /* Ensures the image fully covers the screen */
+  background-size: cover;
   display: flex;
   flex-direction: column;
 }
@@ -23,7 +22,7 @@ html, body {
   justify-content: center;
   align-items: center;
   background: rgba(0, 0, 0, 0.5);
-  padding: 0px 0;
+  padding: 15px 0;
   position: fixed;
   top: 0;
   width: 100%;
@@ -38,19 +37,16 @@ html, body {
   margin: 0;
 }
 
-.navbar-links li {
-  display: inline;
-}
-
 .navbar-links a {
   color: white;
   text-decoration: none;
   font-size: 18px;
   font-weight: bold;
+  transition: color 0.3s;
 }
 
 .navbar-links a:hover {
-  text-decoration: underline;
+  color: #e0cfbc;
 }
 
 /* Main Content */
@@ -64,45 +60,62 @@ html, body {
   padding: 20px;
 }
 
-.text-content h1 {
-  font-size: 88px;
+.text-content {
+  text-align: left;
+  width: 80%;
+  max-width: 1200px;
+  
+}
+
+.big-title {
+  font-size: 120px;
   font-weight: bold;
   color: #555555;
-  margin-bottom: 20px;
 }
 
 .text-content p {
   font-size: 30px;
-  max-width: 800px;
+  font-weight: bold;
+  max-width: 60rem;
   color: wheat;
-  margin-bottom: 5px;
 }
 
 /* Vision Section */
 .vision-section {
   display: flex;
+  justify-content: center;
   align-items: center;
-  justify-content: flex-start;
   width: 100%;
   padding: 50px;
 }
 
 .vision-content {
-  max-width: 50%;
-  padding-left: 50px;
+  max-width: 60%;
+  text-align: center;
 }
 
 .vision-content h2 {
   font-size: 48px;
-  font-weight: bold;
-  text-align: left;
-  color: #dac9a8;
-  margin-bottom: 20px;
+  color: #e0cfbc;
 }
 
 .vision-content p {
   font-size: 18px;
   line-height: 1.6;
-  text-align: left;
-  color: #f0f0f0;
+  color: #e0cfbc;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .text-content h1 {
+    font-size: 60px;
+  }
+
+  .text-content p {
+    font-size: 22px;
+  }
+
+  .vision-content {
+    max-width: 80%;
+  }
 }

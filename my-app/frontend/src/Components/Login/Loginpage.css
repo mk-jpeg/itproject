@@ -1,24 +1,29 @@
-/* Full-screen background with blur effect */
-body {
-  color: #555555;
-  font-family: 'Poppins', sans-serif;
-  text-align: center;
-  height: 100vh;
+.page-container {
   display: flex;
-  justify-content: center;
   align-items: center;
-  margin: 0;
+  justify-content: flex-start;
+  width: 100vw;
+  height: 100vh;
+  padding-left: 5%;
+  background-color: #e0cfbc;
+}
+
+.title {
+  font-size: 100px;
+  font-weight: bold;
+  color: #374350;
+  position: absolute;
+  top: 30%;
+  left: 15%;
 }
 
 .login-container {
-  position: relative;
-  width: 100vw;
-  height: 100vh; /* Fullscreen */
-  background-color: #e0cfbc; /* Set background color */
+  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 
 /* Centered login box */
 .login-box {
