@@ -30,7 +30,7 @@ const GrammarSort = () => {
     const nouns = data.filter((word) => word.category === "noun");
     const verbs = data.filter((word) => word.category === "verb");
     const both = data.filter((word) => word.category === "both");
-    
+
     if (nouns.length && verbs.length && both.length) {
       const selectedWords = [
         nouns[Math.floor(Math.random() * nouns.length)],
@@ -55,13 +55,35 @@ const GrammarSort = () => {
   };
 
   const checkAnswers = () => {
+    let newScore = score;
+    let correctAnswers = 0;
+    let totalWords = currentWords.length;
+    let feedbackMessage = "";
+
+    currentWords.forEach((word) => {
+      if (boxes[word.category].includes(word.word)) {
+        correctAnswers++;
+      }
+    });
+
+    newScore += correctAnswers * 1;
+
+    if (correctAnswers === totalWords) {
+      feedbackMessage = "✅ Great job! All words are correct!";
+    } else if (correctAnswers > 0) {
+      feedbackMessage = `⚠️ You got ${correctAnswers} out of ${totalWords} correct. Try again!`;
+    } else {
+      feedbackMessage = "❌ Oops! None of the words are correct.";
+    }
+
+    setScore(newScore);
+    setFeedback(feedbackMessage);
     setShowNext(true);
-    setRoundCount((prev) => prev + 1);
-    
+
     fetch("http://localhost:5000/api/progress", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ score, round: roundCount + 1, game: "Grammar Sort" })
+      body: JSON.stringify({ score: newScore, round: roundCount + 1, game: "Grammar Sort" }),
     }).catch((error) => console.error("Error saving progress:", error));
   };
 
