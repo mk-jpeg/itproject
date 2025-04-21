@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const WordSchema = new mongoose.Schema({
   word: { type: String, required: true },
@@ -6,4 +6,4 @@ const WordSchema = new mongoose.Schema({
   distractors: { type: Array, required: true },
 });
 
-module.exports = mongoose.model("Word", WordSchema);
+module.exports = mongoose.model('Word', WordSchema);

@@ -9,8 +9,8 @@ const userRoutes = require("./routes/userRoutes");
 const wordRoutes = require("./routes/wordRoutes");
 const GrammarRoutes = require("./routes/GrammarRoutes");
 const progressRoutes = require("./routes/progressRoutes");
-
-
+const studentRoutes = require("./routes/StudentRoutes");
+const teacherRoutes = require("./routes/TeacherRoutes");
 
 // Load environment variables
 dotenv.config();
@@ -29,11 +29,8 @@ app.use("/api/users", userRoutes);
 app.use("/api", wordRoutes);
 app.use("/api/grammar", GrammarRoutes);
 app.use("/api/progress", progressRoutes);
-
-
-
-
-
+app.use("/api/student", studentRoutes);
+app.use("/api/teacher", teacherRoutes);
 
 // TODO: Create API for GrammarSort
 

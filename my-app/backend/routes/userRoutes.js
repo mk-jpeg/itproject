@@ -1,8 +1,8 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const userController = require("../controllers/userController");
-const { verifyTeacher } = require("../middleware/authMiddleware");
-
+const userController = require('../controllers/userController');
+const { verifyToken, authorizeRoles } = require('../middleware/authMiddleware');
+const { TEACHER } = require('../utils/roles');
 /**
  * @swagger
  * /api/users/students:
@@ -19,6 +19,11 @@ const { verifyTeacher } = require("../middleware/authMiddleware");
  *       500:
  *         description: Server error
  */
-router.get("/students", verifyTeacher, userController.getAllStudents);
+router.get(
+  '/students',
+  verifyToken,
+  authorizeRoles(TEACHER),
+  userController.getAllStudents
+);
 
 module.exports = router;
