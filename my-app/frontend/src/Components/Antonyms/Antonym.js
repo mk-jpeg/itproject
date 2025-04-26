@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
+import { StudentService } from "../../Services/StudentService";
 import "./Antonym.css";
 
 const Antonym = () => {
@@ -55,7 +56,10 @@ const Antonym = () => {
       .filter((item) => item.word !== selectedWord.word)
       .map((item) => item.antonym);
 
-    const allOptions = [correctAntonym, ...shuffleArray(distractors).slice(0, 3)];
+    const allOptions = [
+      correctAntonym,
+      ...shuffleArray(distractors).slice(0, 3),
+    ];
     setOptions(shuffleArray(allOptions));
   };
 
@@ -82,18 +86,12 @@ const Antonym = () => {
   const shuffleArray = (array) => array.sort(() => Math.random() - 0.5);
 
   const submitProgress = async () => {
-    const progressData = {
-      game: "Antonym Game",
-      score: score,
-      user: "logged-in-user", // Replace with actual logged-in user ID
-    };
-
     try {
-      await fetch("http://localhost:5000/api/progress", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(progressData),
-      });
+      const totalQuestions = wordData.length;
+      const percentageScore = totalQuestions
+        ? Math.round((score / totalQuestions) * 100)
+        : 0;
+      await StudentService.submitGameAttempt("antonym", percentageScore);
       console.log("Progress recorded successfully.");
     } catch (error) {
       console.error("Error saving progress:", error);
@@ -125,7 +123,11 @@ const Antonym = () => {
                   <div className="word-card">{wordData[currentIndex].word}</div>
                   <div className="options">
                     {options.map((option, index) => (
-                      <button key={index} className="option-btn" onClick={() => handleOptionClick(option)}>
+                      <button
+                        key={index}
+                        className="option-btn"
+                        onClick={() => handleOptionClick(option)}
+                      >
                         {option}
                       </button>
                     ))}
@@ -141,7 +143,10 @@ const Antonym = () => {
               <h2>Final Score: {score}</h2>
 
               {showExit && (
-                <button className="option-btn" onClick={() => window.location.href = "/student-dashboard"}>
+                <button
+                  className="option-btn"
+                  onClick={() => (window.location.href = "/student-dashboard")}
+                >
                   Exit
                 </button>
               )}
