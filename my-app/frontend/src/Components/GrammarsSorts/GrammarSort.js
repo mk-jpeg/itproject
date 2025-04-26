@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
+import { StudentService } from "../../Services/StudentService";
 import "./GrammarSort.css";
 
 const GrammarSort = () => {
@@ -83,8 +84,21 @@ const GrammarSort = () => {
     fetch("http://localhost:5000/api/progress", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ score: newScore, round: roundCount + 1, game: "Grammar Sort" }),
+      body: JSON.stringify({
+        score: newScore,
+        round: roundCount + 1,
+        game: "Grammar Sort",
+      }),
     }).catch((error) => console.error("Error saving progress:", error));
+  };
+
+  const submitProgress = async () => {
+    try {
+      await StudentService.submitGameAttempt("grammar", score);
+      console.log("Progress recorded successfully.");
+    } catch (error) {
+      console.error("Error saving progress:", error);
+    }
   };
 
   const nextRound = () => {
@@ -117,7 +131,10 @@ const GrammarSort = () => {
           <h1>🎉 Game Over! 🎉</h1>
           <h2>Final Score: {score}</h2>
           {showExit && (
-            <button className="exit-btn styled-exit" onClick={() => window.location.href = "/student-dashboard"}>
+            <button
+              className="exit-btn styled-exit"
+              onClick={() => (window.location.href = "/student-dashboard")}
+            >
               Exit
             </button>
           )}
@@ -151,7 +168,9 @@ const GrammarSort = () => {
               >
                 <div className="box-title">{category.toUpperCase()}</div>
                 {boxes[category].map((word, index) => (
-                  <div key={index} className="placed-word">{word}</div>
+                  <div key={index} className="placed-word">
+                    {word}
+                  </div>
                 ))}
               </div>
             ))}
@@ -162,11 +181,17 @@ const GrammarSort = () => {
           <div className="buttons">
             {!showNext ? (
               <>
-                <button className="option-btn" onClick={checkAnswers}>Check</button>
-                <button className="option-btn" onClick={resetGame}>Restart</button>
+                <button className="option-btn" onClick={checkAnswers}>
+                  Check
+                </button>
+                <button className="option-btn" onClick={resetGame}>
+                  Restart
+                </button>
               </>
             ) : (
-              <button className="option-btn" onClick={nextRound}>Next</button>
+              <button className="option-btn" onClick={nextRound}>
+                Next
+              </button>
             )}
           </div>
         </>

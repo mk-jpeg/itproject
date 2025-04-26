@@ -9,47 +9,83 @@ const TeacherDashboard = () => {
   const [error, setError] = useState("");
   const [studentProgress, setStudentProgress] = useState({});
 
+  // useEffect(() => {
+  //   const fetchStudentData = async () => {
+  //     try {
+  //       const data = await TeacherService.getStudentData();
+  //       console.log("Fetched students:", data);
+  //       setStudents(data);
+  //       await fetchStudentProgress(data);
+  //     } catch (err) {
+  //       setError("Failed to fetch student list. Please try again.");
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   const fetchStudentProgress = async (students) => {
+  //     const progressPromises = students.map(async (student) => {
+  //       try {
+  //         const response = await fetch(`http://localhost:5000/api/progress/student/${student.id}`, {
+  //           headers: {
+  //             'Authorization': `Bearer ${localStorage.getItem('token')}`,
+  //           },
+  //         });
+  //         const progressData = await response.json();
+  //         return {
+  //           studentId: student.id,
+  //           antonymProgress: progressData.filter(entry => entry.game === "Antonym Game").reduce((acc, curr) => acc + curr.score, 0),
+  //           grammarProgress: progressData.filter(entry => entry.game === "Grammar Sort").reduce((acc, curr) => acc + curr.score, 0),
+  //         };
+  //       } catch (err) {
+  //         console.error("Failed to fetch progress for student:", student.id);
+  //         return { studentId: student.id, antonymProgress: 0, grammarProgress: 0 };
+  //       }
+  //     });
+
+  //     const progressData = await Promise.all(progressPromises);
+  //     const progressMap = progressData.reduce((acc, progress) => {
+  //       acc[progress.studentId] = progress;
+  //       return acc;
+  //     }, {});
+
+  //     setStudentProgress(progressMap);
+  //   };
+
+  //   fetchStudentData();
+  // }, []);
+
   useEffect(() => {
     const fetchStudentData = async () => {
       try {
-        const data = await TeacherService.getStudentData();
-        console.log("Fetched students:", data);
-        setStudents(data);
-        await fetchStudentProgress(data);
+        const rawData = await TeacherService.getStudentsWithProgress();
+
+        const formattedData = rawData.map(({ student, stats }) => {
+          const progress = {
+            antonym: { attempts: 0, averageScore: 0 },
+            grammar: { attempts: 0, averageScore: 0 },
+          };
+
+          stats.forEach(({ game, attempts, averageScore }) => {
+            progress[game] = {
+              attempts: attempts || 0,
+              averageScore: parseFloat(averageScore || 0),
+            };
+          });
+
+          return {
+            id: student.id,
+            email: student.email,
+            progress,
+          };
+        });
+
+        setStudents(formattedData);
       } catch (err) {
         setError("Failed to fetch student list. Please try again.");
       } finally {
         setLoading(false);
       }
-    };
-
-    const fetchStudentProgress = async (students) => {
-      const progressPromises = students.map(async (student) => {
-        try {
-          const response = await fetch(`http://localhost:5000/api/progress/student/${student.id}`, {
-            headers: {
-              'Authorization': `Bearer ${localStorage.getItem('token')}`,
-            },
-          });
-          const progressData = await response.json();
-          return {
-            studentId: student.id,
-            antonymProgress: progressData.filter(entry => entry.game === "Antonym Game").reduce((acc, curr) => acc + curr.score, 0),
-            grammarProgress: progressData.filter(entry => entry.game === "Grammar Sort").reduce((acc, curr) => acc + curr.score, 0),
-          };
-        } catch (err) {
-          console.error("Failed to fetch progress for student:", student.id);
-          return { studentId: student.id, antonymProgress: 0, grammarProgress: 0 };
-        }
-      });
-
-      const progressData = await Promise.all(progressPromises);
-      const progressMap = progressData.reduce((acc, progress) => {
-        acc[progress.studentId] = progress;
-        return acc;
-      }, {});
-
-      setStudentProgress(progressMap);
     };
 
     fetchStudentData();
@@ -59,12 +95,10 @@ const TeacherDashboard = () => {
     <div>
       {/* Navbar (Matching StudentDashboard) */}
       <div className="navbar">
-  <h1 className="game-title">word.exe</h1>
-  <ul className="navbar-links">
-    
-  </ul>
-  <button className="logout">Logout</button>
-</div>
+        <h1 className="game-title">word.exe</h1>
+        <ul className="navbar-links"></ul>
+        <button className="logout">Logout</button>
+      </div>
 
       {/* Teacher Dashboard Title */}
       <h1 className="dashboard-title">Teacher Dashboard</h1>
@@ -82,21 +116,21 @@ const TeacherDashboard = () => {
             <table>
               <thead>
                 <tr>
-                  <th>Name</th>
                   <th>Email</th>
-                  <th>Role</th>
-                  <th>Antonym Game Progress</th>
-                  <th>Grammar Game Progress</th>
+                  <th>Antonym Score</th>
+                  <th>Antonym Attempts</th>
+                  <th>Grammar Score</th>
+                  <th>Grammar Attempts</th>
                 </tr>
               </thead>
               <tbody>
                 {students.map((student) => (
                   <tr key={student.id}>
-                    <td>{student.name}</td>
                     <td>{student.email}</td>
-                    <td className="capitalize">{student.role}</td>
-                    <td>{studentProgress[student.id]?.antonymProgress || 0}%</td>
-                    <td>{studentProgress[student.id]?.grammarProgress || 0}%</td>
+                    <td>{student.progress.antonym.averageScore}%</td>
+                    <td>{student.progress.antonym.attempts}</td>
+                    <td>{student.progress.grammar.averageScore}%</td>
+                    <td>{student.progress.grammar.attempts}</td>
                   </tr>
                 ))}
               </tbody>
