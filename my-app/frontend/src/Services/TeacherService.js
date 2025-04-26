@@ -23,4 +23,26 @@ export const TeacherService = {
       throw error; // TODO:: Handle errors properly in UI
     }
   },
+
+  getStudentsWithProgress: async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token)
+        throw new Error("No authentication token found. Please log in.");
+
+      const response = await axios.get(
+        "http://localhost:5000/api/teacher/students",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching student progress:", error);
+      throw error;
+    }
+  },
 };
