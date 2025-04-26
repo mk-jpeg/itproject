@@ -1,9 +1,9 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const GameAttempt = require('../models/GameAttempt');
-const { verifyToken } = require('../middleware/authMiddleware');
-const { authorizeRoles } = require('../middleware/authMiddleware');
-const { STUDENT } = require('../utils/roles');
+const GameAttempt = require("../models/GameAttempt");
+const { verifyToken } = require("../middleware/authMiddleware");
+const { authorizeRoles } = require("../middleware/authMiddleware");
+const { STUDENT, GAME_TYPES } = require("../utils/roles");
 
 /**
  * @swagger
@@ -34,24 +34,19 @@ const { STUDENT } = require('../utils/roles');
  *       400:
  *         description: Bad request
  */
-router.post(
-  '/play',
-  verifyToken,
-  authorizeRoles(STUDENT),
-  async (req, res) => {
-    const { gameType, score } = req.body;
-    try {
-      const attempt = await GameAttempt.create({
-        student: req.user.id,
-        gameType,
-        score,
-      });
-      res.json(attempt);
-    } catch (err) {
-      res.status(400).json({ error: err.message });
-    }
+router.post("/play", verifyToken, authorizeRoles(STUDENT), async (req, res) => {
+  const { gameType, score } = req.body;
+  try {
+    const attempt = await GameAttempt.create({
+      student: req.user.id,
+      gameType,
+      score,
+    });
+    res.json(attempt);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
   }
-);
+});
 
 /**
  * @swagger
@@ -68,7 +63,7 @@ router.post(
  *         description: Server error
  */
 router.get(
-  '/attempts',
+  "/attempts",
   verifyToken,
   authorizeRoles(STUDENT),
   async (req, res) => {
@@ -80,5 +75,46 @@ router.get(
     }
   }
 );
+
+/**
+ * @swagger
+ * /api/student/stats:
+ *   get:
+ *     summary: Get logged-in student's game attempt stats
+ *     tags: [Student]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Student game stats
+ *       500:
+ *         description: Server error
+ */
+router.get("/stats", verifyToken, authorizeRoles(STUDENT), async (req, res) => {
+  try {
+    const attempts = await GameAttempt.find({ student: req.user.id });
+
+    const grouped = GAME_TYPES.map((game) => {
+      const filtered = attempts.filter((a) => a.gameType === game);
+      const avg = filtered.length
+        ? (
+            filtered.reduce((sum, a) => sum + a.score, 0) / filtered.length
+          ).toFixed(2)
+        : 0;
+      return { game, attempts: filtered.length, averageScore: avg };
+    });
+
+    res.json({
+      student: {
+        id: req.user.id,
+        username: req.user.username,
+        email: req.user.email,
+      },
+      stats: grouped,
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 module.exports = router;
